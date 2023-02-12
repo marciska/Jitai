@@ -1,6 +1,6 @@
 <p align="center">
   <img src="imgs/logo.svg" alt="Jitai Logo"><br>
-  <span style="font-size:4vmin;">The font randomizer that fits</span>
+  <span style="font-size:4vmin; font-weight: 700;">The font randomizer that fits</span>
 </p>
 
 **Jitai** (字体) is a userscript for [WaniKani](https://wanikani.com).  
@@ -21,7 +21,7 @@ Questions? Visit the [forum][forum].
 
 First make sure you have a userscript manager like **Tampermonkey** installed.  
 Then click on the link below, and your userscript manager should directly recognize it as a userscript to install:  
-<a href="https://github.com/marciska/Jitai/raw/main/Jitai.users.js" style="font-size: 30px;"><img src="imgs/logo_small.png" alt="Jitai Logo" height=22px> Download</a>
+<a href="https://raw.githubusercontent.com/marciska/Jitai/main/Jitai.user.js" style="font-size: 30px;"><img src="imgs/logo_small.png" alt="Jitai Logo" height=22px> Download</a>
 
 ## Note
 
