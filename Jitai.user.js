@@ -3,7 +3,7 @@
 // @author      @marciska
 // @namespace   marciska
 // @description Displays your WaniKani reviews with randomized fonts (based on original by @obskyr)
-// @version     3.0
+// @version     3.0.1
 // @icon        https://raw.github.com/marciska/Jitai/master/imgs/jitai.ico
 // @match       https://*.wanikani.com/subjects/review*
 // @match       https://*.wanikani.com/subjects/extra_study*
@@ -174,7 +174,7 @@
                 [fontkey]: {
                     type: 'checkbox',
                     label: 'Use font in '+script_name,
-                    default: true,
+                    default: false,
                 }
             }
         }]));
@@ -310,9 +310,14 @@
         // choose new random font
         if (update) {
             const glyphs = item_element.innerText;
-            do {
-                font_randomized = font_pool_selected[Math.floor(Math.random() * font_pool_selected.length)];
-            } while (!canRepresentGlyphs(font_randomized, glyphs));
+            if (font_pool_selected.length == 0) {
+                console.log(script_name+': empty font pool!')
+                font_randomized = font_default;
+            } else {
+                do {
+                    font_randomized = font_pool_selected[Math.floor(Math.random() * font_pool_selected.length)];
+                } while (!canRepresentGlyphs(font_randomized, glyphs));
+            }
         }
 
         // show font
