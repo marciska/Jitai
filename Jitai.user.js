@@ -3,7 +3,7 @@
 // @author      @marciska
 // @namespace   marciska
 // @description Displays your WaniKani reviews with randomized fonts (based on original by @obskyr)
-// @version     3.0.1
+// @version     3.0.2
 // @icon        https://raw.github.com/marciska/Jitai/master/imgs/jitai.ico
 // @match       https://*.wanikani.com/subjects/review*
 // @match       https://*.wanikani.com/subjects/extra_study*
@@ -359,6 +359,14 @@
         {
             hover_flipped = false;
             updateRandomFont(true);
+        });
+        
+        // add event to reroll randomized font
+        global.addEventListener("keydown", function(event)
+        {
+            if (event.ctrlKey && event.key === 'j') {
+                updateRandomFont(true);
+            }
         });
     }
 
