@@ -1,6 +1,7 @@
 @font-face {
-    font-family: 'San Chou Me';
+    font-family: 'santyoume-font';
     font-style: normal;
     font-weight: normal;
-    src: url('https://raw.githubusercontent.com/davidsansome/tsurukame/master/www/fonts/san-chou-me.ttf') format('truetype');
+    src: local('santyoume-font'),
+        url('https://raw.githubusercontent.com/davidsansome/tsurukame/master/www/fonts/san-chou-me.ttf') format('truetype');
 }
