@@ -3,7 +3,7 @@
 // @author      @marciska
 // @namespace   marciska
 // @description Displays your WaniKani reviews with randomized fonts (based on original by @obskyr)
-// @version     3.0.4
+// @version     3.1
 // @icon        https://raw.github.com/marciska/Jitai/master/imgs/jitai.ico
 // @match       https://*.wanikani.com/subjects/review*
 // @match       https://*.wanikani.com/subjects/extra_study*
@@ -81,6 +81,7 @@
         "HakusyuKaisyoExtraBold_kk" : {full_font_name: "HakusyuKaisyoExtraBold_kk", display_name: "Hakusyu Kaisyo (Extra Bold)", url: 'local', recommended: false},
         "Hosofuwafont" : {full_font_name: "Hosofuwafont", display_name: "Hoso Fuwa", url: 'https://marciska.github.io/Jitai/HosoFuwa.css', recommended: false},
         "Nagayama-Kai" : {full_font_name: "nagayama_kai", display_name: "Nagayama Kai", url: 'https://marciska.github.io/Jitai/NagayamaKai.css', recommended: false},
+        "Pop-Rum-Cute" : {full_font_name: "PopRumCute", display_name: "Pop Rum Cute", url: 'https://marciska.github.io/Jitai/PopRumCute.css', recommended: false},
         "San-Chou-Me" : {full_font_name: "santyoume-font", display_name: "San Chou Me", url: 'https://marciska.github.io/Jitai/SanChouMe.css', recommended: false},
     };
 
