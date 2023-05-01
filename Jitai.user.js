@@ -3,7 +3,7 @@
 // @author      @marciska
 // @namespace   marciska
 // @description Displays your WaniKani reviews with randomized fonts (based on original by @obskyr)
-// @version     3.0.2
+// @version     3.0.3
 // @icon        https://raw.github.com/marciska/Jitai/master/imgs/jitai.ico
 // @match       https://*.wanikani.com/subjects/review*
 // @match       https://*.wanikani.com/subjects/extra_study*
@@ -63,7 +63,7 @@
         "Kaisei-Decol" : {full_font_name: "Kaisei Decol", url: 'https://fonts.googleapis.com/css?family=Kaisei+Decol&subset=japanese', recommended: false},
         "Kaisei-Tokumin" : {full_font_name: "Kaisei Tokumin", url: 'https://fonts.googleapis.com/css?family=Kaisei+Tokumin&subset=japanese', recommended: false},
         // Other popular fonts
-        "ArmedBanana" : {full_font_name: "ArmedBanana", url: 'local', recommended: true},
+        "ArmedBanana" : {full_font_name: "ArmedBanana", url: 'https://marciska.github.io/Jitai/ArmedBanana.css', recommended: true},
         "AoyagiReisyosimo-AoyagiKouzan" : {full_font_name: "aoyagireisyosimo2, AoyagiKouzanFont2OTF", url: 'local', recommended: false},
         "Aquafont" : {full_font_name: "aquafont", url: 'local', recommended: false},
         "Shin-Maru-Go-Pro" : {full_font_name: "A-OTF Shin Maru Go Pro", url: 'local', recommended: false},
@@ -80,7 +80,7 @@
         "HakusyuKaisyoExtraBold_kk" : {full_font_name: "HakusyuKaisyoExtraBold_kk", url: 'local', recommended: false},
         "Hosofuwafont" : {full_font_name: "Hosofuwafont", url: 'local', recommended: false},
         "Nagayama-Kai" : {full_font_name: "nagayama_kai", url: 'local', recommended: false},
-        "Santyoume-Font" : {full_font_name: "santyoume-font", url: 'local', recommended: false},
+        "San-Chou-Me" : {full_font_name: "santyoume-font", url: 'https://marciska.github.io/Jitai/SanChouMe.css', recommended: false},
     };
 
     // fonts that are selected by user to be shown
