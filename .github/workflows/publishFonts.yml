@@ -1,0 +1,41 @@
+# A workflow to host fonts on github pages
+
+# the name of this workflow
+name: Publish Fonts
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events - but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# inform github to permit this workflow to write on the repository branches
+permissions:
+  contents: write
+
+# define the jobs
+jobs:
+  
+  # this workflow has only 1 job - and that is to publish the fonts (stylesheets)
+  build-and-deploy:
+    # ensure that only one workflow runs at a time
+    concurrency: 
+      group: ${{ github.ref }}
+      cancel-in-progress: true # cancel all pending ones and prioritize the newest
+    
+    # this job will run on ubuntu-latest, but technically we can also use other OS here
+    runs-on: ubuntu-latest
+    
+    # to finish this job, we have to do some steps in successive order
+    steps:
+      # Check-out the repository under $GITHUB_WORKSPACE, so the job can access it
+      - name: 🛎️ Setup Git repo
+        uses: actions/checkout@v3
+      
+      # Deploy to Github Pages
+      - name: 🚀 Deploy to GH-Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: fonts # which folder shall be published
