@@ -1,0 +1,7 @@
+@font-face {
+    font-family: 'darts font';
+    font-style: normal;
+    font-weight: normal;
+    src: local('darts font'),
+        url('https://raw.githubusercontent.com/davidsansome/tsurukame/master/www/fonts/darts-font.woff') format('woff');
+}

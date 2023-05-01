@@ -3,7 +3,7 @@
 // @author      @marciska
 // @namespace   marciska
 // @description Displays your WaniKani reviews with randomized fonts (based on original by @obskyr)
-// @version     3.0.3
+// @version     3.0.4
 // @icon        https://raw.github.com/marciska/Jitai/master/imgs/jitai.ico
 // @match       https://*.wanikani.com/subjects/review*
 // @match       https://*.wanikani.com/subjects/extra_study*
@@ -35,52 +35,53 @@
     // available fonts
     let font_pool = {
         // Default OSX fonts
-        "Hiragino-Kaku-Gothic-Pro" : {full_font_name: "Hiragino Kaku Gothic Pro, ヒラギノ角ゴ Pro W3", url: 'local', recommended: false},
-        "Hiragino-Maru-Gothic-Pro" : {full_font_name: "Hiragino Maru Gothic Pro, ヒラギノ丸ゴ Pro W3", url: 'local', recommended: false},
-        "Hiragino-Mincho-Pro" : {full_font_name: "Hiragino Mincho Pro, ヒラギノ明朝 Pro W3", url: 'local', recommended: false},
+        "Hiragino-Kaku-Gothic-Pro" : {full_font_name: "Hiragino Kaku Gothic Pro, ヒラギノ角ゴ Pro W3", display_name: "Hiragino Kaku Gothic Pro", url: 'local', recommended: false},
+        "Hiragino-Maru-Gothic-Pro" : {full_font_name: "Hiragino Maru Gothic Pro, ヒラギノ丸ゴ Pro W3", display_name: "Hiragino Maru Gothic Pro", url: 'local', recommended: false},
+        "Hiragino-Mincho-Pro" : {full_font_name: "Hiragino Mincho Pro, ヒラギノ明朝 Pro W3", display_name: "Hiragino Mincho Pro", url: 'local', recommended: false},
         // Default Windows fonts
-        "Meiryo" : {full_font_name: "Meiryo, メイリオ", url: 'local', recommended: false},
-        "MS-PGothic" : {full_font_name: "MS PGothic, ＭＳ Ｐゴシック, MS Gothic, ＭＳ ゴック", url: 'local', recommended: false},
-        "MS-PMincho" : {full_font_name: "MS PMincho, ＭＳ Ｐ明朝, MS Mincho, ＭＳ 明朝", url: 'local', recommended: false},
-        "Yu-Gothic" : {full_font_name: "Yu Gothic, YuGothic", url: 'local', recommended: false},
-        "Yu-Mincho" : {full_font_name: "Yu Mincho, YuMincho", url: 'local', recommended: false},
+        "Meiryo" : {full_font_name: "Meiryo, メイリオ", display_name: "Meiryo", url: 'local', recommended: false},
+        "MS-PGothic" : {full_font_name: "MS PGothic, ＭＳ Ｐゴシック, MS Gothic, ＭＳ ゴック", display_name: "MS Gothic", url: 'local', recommended: false},
+        "MS-PMincho" : {full_font_name: "MS PMincho, ＭＳ Ｐ明朝, MS Mincho, ＭＳ 明朝", display_name: "MS Mincho", url: 'local', recommended: false},
+        "Yu-Gothic" : {full_font_name: "Yu Gothic, YuGothic", display_name: "Yu Gothic", url: 'local', recommended: false},
+        "Yu-Mincho" : {full_font_name: "Yu Mincho, YuMincho", display_name: "Yu Mincho", url: 'local', recommended: false},
         // GoogleFonts
-        "Zen-Kurenaido" : {full_font_name: "Zen Kurenaido", url: 'https://fonts.googleapis.com/css?family=Zen+Kurenaido&subset=japanese', recommended: false},
-        "Kaisei-Opti" : {full_font_name: "Kaisei Opti", url: 'https://fonts.googleapis.com/css?family=Kaisei+Opti&subset=japanese', recommended: false},
-        "Reggae-One" : {full_font_name: "Reggae One", url: 'https://fonts.googleapis.com/css?family=Reggae+One&subset=japanese', recommended: false},
-        "New-Tegomin" : {full_font_name: "New Tegomin", url: 'https://fonts.googleapis.com/css?family=New+Tegomin&subset=japanese', recommended: false},
-        "Yuji-Boku" : {full_font_name: "Yuji Boku", url: 'https://fonts.googleapis.com/css?family=Yuji+Boku&subset=japanese', recommended: false},
-        "Yuji-Mai" : {full_font_name: "Yuji Mai", url: 'https://fonts.googleapis.com/css?family=Yuji+Mai&subset=japanese', recommended: false},
-        "Yuji-Syuku" : {full_font_name: "Yuji Syuku", url: 'https://fonts.googleapis.com/css?family=Yuji+Syuku&subset=japanese', recommended: false},
-        "DotGothic16" : {full_font_name: "DotGothic16", url: 'https://fonts.googleapis.com/css?family=DotGothic16&subset=japanese', recommended: true},
-        "Hachi-Maru-Pop" : {full_font_name: "Hachi Maru Pop", url: 'https://fonts.googleapis.com/css?family=Hachi+Maru+Pop&subset=japanese', recommended: true},
-        "Yomogi" : {full_font_name: "Yomogi", url: 'https://fonts.googleapis.com/css?family=Yomogi&subset=japanese', recommended: false},
-        "Potta-One" : {full_font_name: "Potta One", url: 'https://fonts.googleapis.com/css?family=Potta+One&subset=japanese', recommended: false},
-        "Dela-Gothic-One" : {full_font_name: "Dela Gothic One", url: 'https://fonts.googleapis.com/css?family=Dela+Gothic+One&subset=japanese', recommended: false},
-        "RocknRoll-One" : {full_font_name: "RocknRoll One", url: 'https://fonts.googleapis.com/css?family=RocknRoll+One&subset=japanese', recommended: false},
-        "Stick" : {full_font_name: "Stick", url: 'https://fonts.googleapis.com/css?family=Stick&subset=japanese', recommended: true},
-        "Yusei-Magic" : {full_font_name: "Yusei Magic", url: 'https://fonts.googleapis.com/css?family=Yusei+Magic&subset=japanese', recommended: false},
-        "Kaisei-Decol" : {full_font_name: "Kaisei Decol", url: 'https://fonts.googleapis.com/css?family=Kaisei+Decol&subset=japanese', recommended: false},
-        "Kaisei-Tokumin" : {full_font_name: "Kaisei Tokumin", url: 'https://fonts.googleapis.com/css?family=Kaisei+Tokumin&subset=japanese', recommended: false},
+        "Zen-Kurenaido" : {full_font_name: "Zen Kurenaido", display_name: "Zen Kurenaido", url: 'https://fonts.googleapis.com/css?family=Zen+Kurenaido&subset=japanese', recommended: false},
+        "Kaisei-Opti" : {full_font_name: "Kaisei Opti", display_name: "Kaisei Opti", url: 'https://fonts.googleapis.com/css?family=Kaisei+Opti&subset=japanese', recommended: false},
+        "Reggae-One" : {full_font_name: "Reggae One", display_name: "Reggae One", url: 'https://fonts.googleapis.com/css?family=Reggae+One&subset=japanese', recommended: false},
+        "New-Tegomin" : {full_font_name: "New Tegomin", display_name: "New Tegomin", url: 'https://fonts.googleapis.com/css?family=New+Tegomin&subset=japanese', recommended: false},
+        "Yuji-Boku" : {full_font_name: "Yuji Boku", display_name: "Yuji Boku", url: 'https://fonts.googleapis.com/css?family=Yuji+Boku&subset=japanese', recommended: false},
+        "Yuji-Mai" : {full_font_name: "Yuji Mai", display_name: "Yuji Mai", url: 'https://fonts.googleapis.com/css?family=Yuji+Mai&subset=japanese', recommended: false},
+        "Yuji-Syuku" : {full_font_name: "Yuji Syuku", display_name: "Yuji Syuku", url: 'https://fonts.googleapis.com/css?family=Yuji+Syuku&subset=japanese', recommended: false},
+        "DotGothic16" : {full_font_name: "DotGothic16", display_name: "DotGothic16", url: 'https://fonts.googleapis.com/css?family=DotGothic16&subset=japanese', recommended: true},
+        "Hachi-Maru-Pop" : {full_font_name: "Hachi Maru Pop", display_name: "Hachi Maru Pop", url: 'https://fonts.googleapis.com/css?family=Hachi+Maru+Pop&subset=japanese', recommended: true},
+        "Yomogi" : {full_font_name: "Yomogi", display_name: "Yomogi", url: 'https://fonts.googleapis.com/css?family=Yomogi&subset=japanese', recommended: false},
+        "Potta-One" : {full_font_name: "Potta One", display_name: "Potta One", url: 'https://fonts.googleapis.com/css?family=Potta+One&subset=japanese', recommended: false},
+        "Dela-Gothic-One" : {full_font_name: "Dela Gothic One", display_name: "Dela Gothic One", url: 'https://fonts.googleapis.com/css?family=Dela+Gothic+One&subset=japanese', recommended: true},
+        "RocknRoll-One" : {full_font_name: "RocknRoll One", display_name: "RocknRoll One", url: 'https://fonts.googleapis.com/css?family=RocknRoll+One&subset=japanese', recommended: false},
+        "Stick" : {full_font_name: "Stick", display_name: "Stick", url: 'https://fonts.googleapis.com/css?family=Stick&subset=japanese', recommended: true},
+        "Yusei-Magic" : {full_font_name: "Yusei Magic", display_name: "Yusei Magic", url: 'https://fonts.googleapis.com/css?family=Yusei+Magic&subset=japanese', recommended: false},
+        "Kaisei-Decol" : {full_font_name: "Kaisei Decol", display_name: "Kaisei Decol", url: 'https://fonts.googleapis.com/css?family=Kaisei+Decol&subset=japanese', recommended: false},
+        "Kaisei-Tokumin" : {full_font_name: "Kaisei Tokumin", display_name: "Kaisei Tokumin", url: 'https://fonts.googleapis.com/css?family=Kaisei+Tokumin&subset=japanese', recommended: false},
         // Other popular fonts
-        "ArmedBanana" : {full_font_name: "ArmedBanana", url: 'https://marciska.github.io/Jitai/ArmedBanana.css', recommended: true},
-        "AoyagiReisyosimo-AoyagiKouzan" : {full_font_name: "aoyagireisyosimo2, AoyagiKouzanFont2OTF", url: 'local', recommended: false},
-        "Aquafont" : {full_font_name: "aquafont", url: 'local', recommended: false},
-        "Shin-Maru-Go-Pro" : {full_font_name: "A-OTF Shin Maru Go Pro", url: 'local', recommended: false},
-        "Chifont" : {full_font_name: "'chifont+', chifont", url: 'local', recommended: false},
-        "Cinecaption" : {full_font_name: "cinecaption", url: 'local', recommended: false},
-        "Darts" : {full_font_name: "darts font", url: 'local', recommended: false},
-        "EPSON-行書体Ｍ" : {full_font_name: "EPSON 行書体Ｍ", url: 'local', recommended: false},
-        "EPSON-正楷書体Ｍ" : {full_font_name: "EPSON 正楷書体Ｍ", url: 'local', recommended: false},
-        "EPSON-教科書体Ｍ" : {full_font_name: "EPSON 教科書体Ｍ", url: 'local', recommended: false},
-        "EPSON-太明朝体Ｂ" : {full_font_name: "EPSON 太明朝体Ｂ", url: 'local', recommended: false},
-        "EPSON-太行書体Ｂ" : {full_font_name: "EPSON 太行書体Ｂ", url: 'local', recommended: false},
-        "EPSON-丸ゴシック体Ｍ" : {full_font_name: "EPSON 丸ゴシック体Ｍ", url: 'local', recommended: false},
-        "FC-Flower" : {full_font_name: "FC-Flower", url: 'local', recommended: false},
-        "HakusyuKaisyoExtraBold_kk" : {full_font_name: "HakusyuKaisyoExtraBold_kk", url: 'local', recommended: false},
-        "Hosofuwafont" : {full_font_name: "Hosofuwafont", url: 'local', recommended: false},
-        "Nagayama-Kai" : {full_font_name: "nagayama_kai", url: 'local', recommended: false},
-        "San-Chou-Me" : {full_font_name: "santyoume-font", url: 'https://marciska.github.io/Jitai/SanChouMe.css', recommended: false},
+        "ArmedBanana" : {full_font_name: "ArmedBanana", display_name: "Armed Banana", url: 'https://marciska.github.io/Jitai/ArmedBanana.css', recommended: true},
+        "ArmedLemon" : {full_font_name: "ArmedLemon", display_name: "Armed Lemon", url: 'local', recommended: false},
+        "AoyagiReisyosimo-AoyagiKouzan" : {full_font_name: "aoyagireisyosimo2, AoyagiKouzanFont2OTF", display_name: "Aoyagi Kouzan", url: 'local', recommended: false},
+        "Aquafont" : {full_font_name: "aquafont", display_name: "Aquafont", url: 'local', recommended: false},
+        "Shin-Maru-Go-Pro" : {full_font_name: "A-OTF Shin Maru Go Pro", display_name: "Shin Maru Go Pro", url: 'local', recommended: false},
+        "Chifont" : {full_font_name: "'chifont+', chifont", display_name: "Chifont", url: 'local', recommended: false},
+        "Cinecaption" : {full_font_name: "cinecaption", display_name: "Cinecaption", url: 'local', recommended: false},
+        "Darts" : {full_font_name: "darts font", display_name: "Darts", url: 'https://marciska.github.io/Jitai/Darts.css', recommended: false},
+        "EPSON-行書体Ｍ" : {full_font_name: "EPSON 行書体Ｍ", display_name: "EPSON 行書体Ｍ", url: 'local', recommended: false},
+        "EPSON-正楷書体Ｍ" : {full_font_name: "EPSON 正楷書体Ｍ", display_name: "EPSON 正楷書体Ｍ", url: 'local', recommended: false},
+        "EPSON-教科書体Ｍ" : {full_font_name: "EPSON 教科書体Ｍ", display_name: "EPSON 教科書体Ｍ", url: 'local', recommended: false},
+        "EPSON-太明朝体Ｂ" : {full_font_name: "EPSON 太明朝体Ｂ", display_name: "EPSON 太明朝体Ｂ", url: 'local', recommended: false},
+        "EPSON-太行書体Ｂ" : {full_font_name: "EPSON 太行書体Ｂ", display_name: "EPSON 太行書体Ｂ", url: 'local', recommended: false},
+        "EPSON-丸ゴシック体Ｍ" : {full_font_name: "EPSON 丸ゴシック体Ｍ", display_name: "EPSON 丸ゴシック体Ｍ", url: 'local', recommended: false},
+        "FC-Flower" : {full_font_name: "FC-Flower", display_name: "FC-Flower", url: 'https://marciska.github.io/Jitai/FCFlower.css', recommended: false},
+        "HakusyuKaisyoExtraBold_kk" : {full_font_name: "HakusyuKaisyoExtraBold_kk", display_name: "Hakusyu Kaisyo (Extra Bold)", url: 'local', recommended: false},
+        "Hosofuwafont" : {full_font_name: "Hosofuwafont", display_name: "Hoso Fuwa", url: 'https://marciska.github.io/Jitai/HosoFuwa.css', recommended: false},
+        "Nagayama-Kai" : {full_font_name: "nagayama_kai", display_name: "Nagayama Kai", url: 'https://marciska.github.io/Jitai/NagayamaKai.css', recommended: false},
+        "San-Chou-Me" : {full_font_name: "santyoume-font", display_name: "San Chou Me", url: 'https://marciska.github.io/Jitai/SanChouMe.css', recommended: false},
     };
 
     // fonts that are selected by user to be shown
@@ -159,13 +160,13 @@
 
         // order fonts alphabetically
         const fontkeys = Object.keys(font_pool).sort((a, b) => 
-            font_pool[a].full_font_name.localeCompare(font_pool[b].full_font_name, undefined, {sensitivity: 'base'})
+            font_pool[a].display_name.localeCompare(font_pool[b].display_name, undefined, {sensitivity: 'base'})
         );
 
         // prepare selection option for every font
         const font_selector = Object.fromEntries(fontkeys.map(fontkey => ['BOX_'+fontkey, {
             type: 'group',
-            label: `<span class="font_label${font_pool[fontkey].recommended ? ' font_recommended' : ''}">${font_pool[fontkey].full_font_name}</span>`,
+            label: `<span class="font_label${font_pool[fontkey].recommended ? ' font_recommended' : ''}">${font_pool[fontkey].display_name}</span>`,
             content: {
                 sampletext: {
                     type: 'html',

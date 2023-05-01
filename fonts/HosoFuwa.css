@@ -1,0 +1,7 @@
+@font-face {
+    font-family: 'Hosofuwafont';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Hosofuwafont'),
+        url('https://raw.githubusercontent.com/davidsansome/tsurukame/master/www/fonts/hoso-fuwa.ttf') format('truetype');
+}
