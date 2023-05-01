@@ -1,0 +1,7 @@
+@font-face {
+    font-family: 'nagayama_kai';
+    font-style: normal;
+    font-weight: normal;
+    src: local('nagayama_kai'),
+        url('https://raw.githubusercontent.com/davidsansome/tsurukame/master/www/fonts/nagayama-kai.otf') format('truetype');
+}
