@@ -3,7 +3,7 @@
 // @author      @marciska
 // @namespace   marciska
 // @description Displays your WaniKani reviews with randomized fonts (based on original by @obskyr)
-// @version     3.1
+// @version     3.1.1
 // @icon        https://raw.github.com/marciska/Jitai/master/imgs/jitai.ico
 // @match       https://*.wanikani.com/subjects/review*
 // @match       https://*.wanikani.com/subjects/extra_study*
@@ -142,9 +142,17 @@
                     if (!isFontInstalled(value.full_font_name)) { continue; }
                 }
                 // put fonts in selected fonts
-                font_pool_selected.push(value.full_font_name);
+                let frequency = settings[fontkey+'_frequency'];
+                if (frequency === undefined) { frequency = 1; } // if script started first time, the value might be undefined
+                frequency = Math.ceil(frequency);
+                for (let i = 0; i < frequency; i++) {
+                    font_pool_selected.push(value.full_font_name);
+                }
             }
         }
+
+        // randomly shuffle font pool
+        shuffleArray(font_pool_selected);
 
         updateRandomFont(true);
     }
@@ -177,6 +185,14 @@
                     type: 'checkbox',
                     label: 'Use font in '+script_name,
                     default: false,
+                },
+                [fontkey+'_frequency']: {
+                    type: 'number',
+                    label: 'Frequency',
+                    hover_tip: 'The higher the value, the more often you see this font during review. It is affected by how many fonts you have enabled.',
+                    default: 1,
+                    min: 1,
+                    step: 1,
                 }
             }
         }]));
@@ -305,6 +321,13 @@
             gstaticLink.href = "https://fonts.gstatic.com";
             gstaticLink.crossOrigin = true;
             document.head.append(gstaticLink);
+        }
+    }
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
         }
     }
 
