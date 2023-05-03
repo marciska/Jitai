@@ -200,11 +200,11 @@
         const font_available_selector = Object.fromEntries(fontkeys_available.map(fontkey => ['BOX_'+fontkey, {
             type: 'group',
             // label: `<span class="font_label${font_pool[fontkey].recommended ? ' font_recommended' : ''}">${font_pool[fontkey].display_name}</span>`,
-            label: `<span class="font_label${fonts_available[fontkey].recommended ? ' font_recommended' : ''}">${fonts_available[fontkey].display_name} ${fonts_available[fontkey].url !== 'local' ? '<a href="'+fonts_available[fontkey].download+'"><i class="webfont"></i></a>' : ''}</span>`,
+            label: `<span class="font_label${fonts_available[fontkey].recommended ? ' font_recommended' : ''}">${fonts_available[fontkey].display_name} ${fonts_available[fontkey].url !== 'local' ? '<a href="'+fonts_available[fontkey].download+'" target="_blank"><i class="webfont"></i></a>' : ''}</span>`,
             content: {
                 sampletext: {
                     type: 'html',
-                    html: `<p class="font_example" style="font-family:'${fonts_available[fontkey].full_font_name}'">${example_sentence}</p>`
+                    html: `<p class="font_example" style="font-family: ${fonts_available[fontkey].full_font_name}">${example_sentence}</p>`
                 },
                 [fontkey]: {
                     type: 'checkbox',
@@ -223,7 +223,7 @@
         }]));
         const font_unavailable_selector = Object.fromEntries(fontkeys_unavailable.map(fontkey => ['BOX_'+fontkey, {
             type: 'html',
-            html: `<p class="font_label${fonts_unavailable[fontkey].recommended ? ' font_recommended' : ''}">${fonts_unavailable[fontkey].download !== '' ? '<a href="'+fonts_unavailable[fontkey].download+'"><i class="downloadfont"></i></a>' : ''}${fonts_unavailable[fontkey].display_name}</p>`,
+            html: `<p class="font_label${fonts_unavailable[fontkey].recommended ? ' font_recommended' : ''}">${fonts_unavailable[fontkey].download !== '' ? '<a href="'+fonts_unavailable[fontkey].download+'" target="_blank"><i class="downloadfont"></i></a>' : ''}${fonts_unavailable[fontkey].display_name}</p>`,
         }]));
 
         // prepare configuration dialog
@@ -240,7 +240,7 @@
                     content: {
                         sampletext: {
                             type: 'html',
-                            html: `<p class="font_example" style="font-family:'${font_randomized}'">${example_sentence}</p>`
+                            html: `<p class="font_example" style="font-family: ${font_randomized}">${example_sentence}</p>`
                         }
                     }
                 },
@@ -358,18 +358,40 @@
         }
 
         // connect to AdobeFonts via their method
-        document.head.insertAdjacentHTML('beforeend',
-            `<script>
-            (function(d) {
-              var config = {
-                kitId: 'xad5qou',
-                scriptTimeout: 3000,
-                async: true
-              },
-              h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
-            })(document);
-          </script>`
-        );   
+        // document.head.insertAdjacentHTML('beforeend',
+        //     `<script>
+        //     (function(d) {
+        //       var config = {
+        //         kitId: 'xad5qou',
+        //         scriptTimeout: 3000,
+        //         async: true
+        //       },
+        //       h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+        //     })(document);
+        //   </script>`
+        // );
+        let config = {
+            kitId: 'xad5qou',
+            scriptTimeout: 3000,
+            async: true
+        };
+        let h=document.documentElement;
+        let t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";}, config.scriptTimeout);
+        let tk=document.createElement("script");
+        let f=false;
+        let s=document.getElementsByTagName("script")[0];
+        let a;
+        h.className+=" wf-loading";
+        tk.src='https://use.typekit.net/'+config.kitId+'.js';
+        tk.async=true;
+        tk.onload=tk.onreadystatechange=function(){
+            a=this.readyState;
+            if(f||a&&a!="complete"&&a!="loaded") { return; }
+            f=true;
+            clearTimeout(t);
+            try{Typekit.load(config)}catch(e){}
+        };
+        s.parentNode.insertBefore(tk,s);
     }
 
     function shuffleArray(array) {
