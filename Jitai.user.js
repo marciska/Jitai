@@ -3,7 +3,7 @@
 // @author      @marciska
 // @namespace   marciska
 // @description Displays your WaniKani reviews with randomized fonts (based on original by @obskyr)
-// @version     3.2
+// @version     3.2.1
 // @icon        https://raw.github.com/marciska/Jitai/master/imgs/jitai.ico
 // @match       https://*.wanikani.com/subjects/review*
 // @match       https://*.wanikani.com/subjects/extra_study*
@@ -27,7 +27,8 @@
     const item_element = document.getElementsByClassName("character-header__characters")[0];
 
     // ----- Fonts -----
-    const example_sentence = '質問：私立探偵 (P.I.) はどんな靴を履いていますか?<br>答え：・・・スニーカー。（笑）';
+    // const example_sentence = '質問：私立探偵 (P.I.) はどんな靴を履いていますか?<br>答え：・・・スニーカー。（笑）';
+    const example_sentence = '質問：クモの味は何だと思う?<br>答え：・・・酸っぱいだ！（笑）';
     
     let font_default = {display_name:'Default Font', full_font_name:getDefaultFont()};
     let font_randomized = font_default;
@@ -115,7 +116,8 @@
     }
 
     function settingsPrepare(dialog) {
-        dialog.dialog({width:720});
+        // dialog.dialog({width:720});
+        dialog.dialog({width:500});
     }
     async function settingsSave(settings) {
         await wkof.Settings.save(script_id);
@@ -251,7 +253,7 @@
                 },
                 legend: {
                     type: 'html',
-                    html: `<div class="font_legend"><span class="font_recommended">: Recommended Font</span><span class="webfont">: Imported as webfont (click to download)</span><span><i class="font_bugged"></i>: Bugged on Safari (and Firefox if tracking prevention enabled)</span></div><p class="font_legend">Don't worry about fonts that don't come with all Kanjis (shown as invisible glyphs). Jitai will during review only choose fonts that can fully represent the current review item.</p>`
+                    html: `<div class="font_legend"><span class="font_recommended">: Recommended Font</span><span class="webfont">: Imported as webfont (click to download)</span><span><i class="font_bugged"></i>: Bugged on Safari (and some Firefox settings)</span></div><p class="font_legend">Don't worry about fonts that don't come with all Kanjis (shown as invisible glyphs). Jitai will during review only choose fonts that can fully represent the current review item.</p>`
                 },
                 divider_available: {
                     type: 'section',
@@ -264,7 +266,7 @@
                 },
                 legend_fonts_unavailable: {
                     type: 'html',
-                    html: `<div class="font_legend"><span class="downloadfont">: Local font available for download. Click on link to visit website.</span></div>`
+                    html: `<div class="font_legend"><span class="downloadfont">: Local font available. Click to visit download website.</span></div>`
                 },
                 ...font_unavailable_selector
             }
@@ -509,7 +511,7 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 5px;
-                padding-left: 15% !important;
+                padding-left: 5% !important;
             }
             p.font_legend {
                 display: block;
