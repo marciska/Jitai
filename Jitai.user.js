@@ -29,71 +29,71 @@
     // ----- Fonts -----
     const example_sentence = '質問：私立探偵 (P.I.) はどんな靴を履いていますか?<br>答え：・・・スニーカー。（笑）';
     
-    let font_default = getDefaultFont();
+    let font_default = {display_name:'Default Font', full_font_name:getDefaultFont()};
     let font_randomized = font_default;
 
     // available fonts
     let font_pool = {
         // Default OSX fonts
-        "Hiragino-Kaku-Gothic-Pro" : {full_font_name: "Hiragino Kaku Gothic Pro, ヒラギノ角ゴ Pro W3", display_name: "Hiragino Kaku Gothic Pro", url: 'local', download: '', recommended: false},
-        "Hiragino-Maru-Gothic-Pro" : {full_font_name: "Hiragino Maru Gothic Pro, ヒラギノ丸ゴ Pro W3", display_name: "Hiragino Maru Gothic Pro", url: 'local', download: '', recommended: false},
-        "Hiragino-Mincho-Pro" : {full_font_name: "Hiragino Mincho Pro, ヒラギノ明朝 Pro W3", display_name: "Hiragino Mincho Pro", url: 'local', download: '', recommended: false},
+        "Hiragino-Kaku-Gothic-Pro" : {full_font_name: "Hiragino Kaku Gothic Pro, ヒラギノ角ゴ Pro W3", display_name: "Hiragino Kaku Gothic Pro", url: 'local', download: '', recommended: false, bugged: false},
+        "Hiragino-Maru-Gothic-Pro" : {full_font_name: "Hiragino Maru Gothic Pro, ヒラギノ丸ゴ Pro W3", display_name: "Hiragino Maru Gothic Pro", url: 'local', download: '', recommended: false, bugged: false},
+        "Hiragino-Mincho-Pro" :      {full_font_name: "Hiragino Mincho Pro, ヒラギノ明朝 Pro W3", display_name: "Hiragino Mincho Pro", url: 'local', download: '', recommended: false, bugged: false},
         // Default Windows fonts
-        "Meiryo" : {full_font_name: "Meiryo, メイリオ", display_name: "Meiryo", url: 'local', download: '', recommended: false},
-        "MS-PGothic" : {full_font_name: "MS PGothic, ＭＳ Ｐゴシック, MS Gothic, ＭＳ ゴック", display_name: "MS Gothic", url: 'local', download: '', recommended: false},
-        "MS-PMincho" : {full_font_name: "MS PMincho, ＭＳ Ｐ明朝, MS Mincho, ＭＳ 明朝", display_name: "MS Mincho", url: 'local', download: '', recommended: false},
-        "Yu-Gothic" : {full_font_name: "Yu Gothic, YuGothic", display_name: "Yu Gothic", url: 'local', download: '', recommended: false},
-        "Yu-Mincho" : {full_font_name: "Yu Mincho, YuMincho", display_name: "Yu Mincho", url: 'local', download: '', recommended: false},
+        "Meiryo" :     {full_font_name: "Meiryo, メイリオ", display_name: "Meiryo", url: 'local', download: '', recommended: false, bugged: false},
+        "MS-PGothic" : {full_font_name: "MS PGothic, ＭＳ Ｐゴシック, MS Gothic, ＭＳ ゴック", display_name: "MS Gothic", url: 'local', download: '', recommended: false, bugged: false},
+        "MS-PMincho" : {full_font_name: "MS PMincho, ＭＳ Ｐ明朝, MS Mincho, ＭＳ 明朝", display_name: "MS Mincho", url: 'local', download: '', recommended: false, bugged: false},
+        "Yu-Gothic" :  {full_font_name: "Yu Gothic, YuGothic", display_name: "Yu Gothic", url: 'local', download: '', recommended: false, bugged: false},
+        "Yu-Mincho" :  {full_font_name: "Yu Mincho, YuMincho", display_name: "Yu Mincho", url: 'local', download: '', recommended: false, bugged: false},
         // GoogleFonts
-        "Zen-Kurenaido" : {full_font_name: "Zen Kurenaido", display_name: "Zen Kurenaido", url: 'https://fonts.googleapis.com/css?family=Zen+Kurenaido&subset=japanese', download: 'https://fonts.google.com/specimen/Zen+Kurenaido', recommended: false},
-        "Kaisei-Opti" : {full_font_name: "Kaisei Opti", display_name: "Kaisei Opti", url: 'https://fonts.googleapis.com/css?family=Kaisei+Opti&subset=japanese', download: 'https://fonts.google.com/specimen/Kaisei+Opti', recommended: false},
-        "Reggae-One" : {full_font_name: "Reggae One", display_name: "Reggae One", url: 'https://fonts.googleapis.com/css?family=Reggae+One&subset=japanese', download: 'https://fonts.google.com/specimen/Reggae+One', recommended: false},
-        "New-Tegomin" : {full_font_name: "New Tegomin", display_name: "New Tegomin", url: 'https://fonts.googleapis.com/css?family=New+Tegomin&subset=japanese', download: 'https://fonts.google.com/specimen/New+Tegomin', recommended: false},
-        "Yuji-Boku" : {full_font_name: "Yuji Boku", display_name: "Yuji Boku", url: 'https://fonts.googleapis.com/css?family=Yuji+Boku&subset=japanese', download: 'https://fonts.google.com/specimen/Yuji+Boku', recommended: false},
-        "Yuji-Mai" : {full_font_name: "Yuji Mai", display_name: "Yuji Mai", url: 'https://fonts.googleapis.com/css?family=Yuji+Mai&subset=japanese', download: 'https://fonts.google.com/specimen/Yuji+Mai', recommended: false},
-        "Yuji-Syuku" : {full_font_name: "Yuji Syuku", display_name: "Yuji Syuku", url: 'https://fonts.googleapis.com/css?family=Yuji+Syuku&subset=japanese', download: 'https://fonts.google.com/specimen/Yuji+Syuku', recommended: false},
-        "DotGothic16" : {full_font_name: "DotGothic16", display_name: "DotGothic16", url: 'https://fonts.googleapis.com/css?family=DotGothic16&subset=japanese', download: 'https://fonts.google.com/specimen/DotGothic16', recommended: true},
-        "Hachi-Maru-Pop" : {full_font_name: "Hachi Maru Pop", display_name: "Hachi Maru Pop", url: 'https://fonts.googleapis.com/css?family=Hachi+Maru+Pop&subset=japanese', download: 'https://fonts.google.com/specimen/Hachi+Maru+Pop', recommended: true},
-        "Yomogi" : {full_font_name: "Yomogi", display_name: "Yomogi", url: 'https://fonts.googleapis.com/css?family=Yomogi&subset=japanese', download: 'https://fonts.google.com/specimen/Yomogi', recommended: false},
-        "Potta-One" : {full_font_name: "Potta One", display_name: "Potta One", url: 'https://fonts.googleapis.com/css?family=Potta+One&subset=japanese', download: 'https://fonts.google.com/specimen/Potta+One', recommended: false},
-        "Dela-Gothic-One" : {full_font_name: "Dela Gothic One", display_name: "Dela Gothic One", url: 'https://fonts.googleapis.com/css?family=Dela+Gothic+One&subset=japanese', download: 'https://fonts.google.com/specimen/Dela+Gothic+One', recommended: true},
-        "RocknRoll-One" : {full_font_name: "RocknRoll One", display_name: "RocknRoll One", url: 'https://fonts.googleapis.com/css?family=RocknRoll+One&subset=japanese', download: 'https://fonts.google.com/specimen/RocknRoll+One', recommended: false},
-        "Stick" : {full_font_name: "Stick", display_name: "Stick", url: 'https://fonts.googleapis.com/css?family=Stick&subset=japanese', download: 'https://fonts.google.com/specimen/Stick', recommended: true},
-        "Yusei-Magic" : {full_font_name: "Yusei Magic", display_name: "Yusei Magic", url: 'https://fonts.googleapis.com/css?family=Yusei+Magic&subset=japanese', download: 'https://fonts.google.com/specimen/Yusei+MagicYusei+Magic', recommended: false},
-        "Kaisei-Decol" : {full_font_name: "Kaisei Decol", display_name: "Kaisei Decol", url: 'https://fonts.googleapis.com/css?family=Kaisei+Decol&subset=japanese', download: 'https://fonts.google.com/specimen/Kaisei+Decol', recommended: false},
-        "Kaisei-Tokumin" : {full_font_name: "Kaisei Tokumin", display_name: "Kaisei Tokumin", url: 'https://fonts.googleapis.com/css?family=Kaisei+Tokumin&subset=japanese', download: 'https://fonts.google.com/specimen/Kaisei+Tokumin', recommended: false},
+        "Zen-Kurenaido" :  {full_font_name: "Zen Kurenaido", display_name: "Zen Kurenaido", url: 'https://fonts.googleapis.com/css?family=Zen+Kurenaido&subset=japanese', download: 'https://fonts.google.com/specimen/Zen+Kurenaido', recommended: false, bugged: false},
+        "Kaisei-Opti" :    {full_font_name: "Kaisei Opti", display_name: "Kaisei Opti", url: 'https://fonts.googleapis.com/css?family=Kaisei+Opti&subset=japanese', download: 'https://fonts.google.com/specimen/Kaisei+Opti', recommended: false, bugged: false},
+        "Reggae-One" :     {full_font_name: "Reggae One", display_name: "Reggae One", url: 'https://fonts.googleapis.com/css?family=Reggae+One&subset=japanese', download: 'https://fonts.google.com/specimen/Reggae+One', recommended: false, bugged: false},
+        "New-Tegomin" :    {full_font_name: "New Tegomin", display_name: "New Tegomin", url: 'https://fonts.googleapis.com/css?family=New+Tegomin&subset=japanese', download: 'https://fonts.google.com/specimen/New+Tegomin', recommended: false, bugged: false},
+        "Yuji-Boku" :      {full_font_name: "Yuji Boku", display_name: "Yuji Boku", url: 'https://fonts.googleapis.com/css?family=Yuji+Boku&subset=japanese', download: 'https://fonts.google.com/specimen/Yuji+Boku', recommended: false, bugged: false},
+        "Yuji-Mai" :       {full_font_name: "Yuji Mai", display_name: "Yuji Mai", url: 'https://fonts.googleapis.com/css?family=Yuji+Mai&subset=japanese', download: 'https://fonts.google.com/specimen/Yuji+Mai', recommended: false, bugged: false},
+        "Yuji-Syuku" :     {full_font_name: "Yuji Syuku", display_name: "Yuji Syuku", url: 'https://fonts.googleapis.com/css?family=Yuji+Syuku&subset=japanese', download: 'https://fonts.google.com/specimen/Yuji+Syuku', recommended: false, bugged: false},
+        "DotGothic16" :    {full_font_name: "DotGothic16", display_name: "DotGothic16", url: 'https://fonts.googleapis.com/css?family=DotGothic16&subset=japanese', download: 'https://fonts.google.com/specimen/DotGothic16', recommended: true, bugged: false},
+        "Hachi-Maru-Pop" : {full_font_name: "Hachi Maru Pop", display_name: "Hachi Maru Pop", url: 'https://fonts.googleapis.com/css?family=Hachi+Maru+Pop&subset=japanese', download: 'https://fonts.google.com/specimen/Hachi+Maru+Pop', recommended: true, bugged: false},
+        "Yomogi" :         {full_font_name: "Yomogi", display_name: "Yomogi", url: 'https://fonts.googleapis.com/css?family=Yomogi&subset=japanese', download: 'https://fonts.google.com/specimen/Yomogi', recommended: false, bugged: false},
+        "Potta-One" :      {full_font_name: "Potta One", display_name: "Potta One", url: 'https://fonts.googleapis.com/css?family=Potta+One&subset=japanese', download: 'https://fonts.google.com/specimen/Potta+One', recommended: false, bugged: false},
+        "Dela-Gothic-One" :{full_font_name: "Dela Gothic One", display_name: "Dela Gothic One", url: 'https://fonts.googleapis.com/css?family=Dela+Gothic+One&subset=japanese', download: 'https://fonts.google.com/specimen/Dela+Gothic+One', recommended: true, bugged: false},
+        "RocknRoll-One" :  {full_font_name: "RocknRoll One", display_name: "RocknRoll One", url: 'https://fonts.googleapis.com/css?family=RocknRoll+One&subset=japanese', download: 'https://fonts.google.com/specimen/RocknRoll+One', recommended: false, bugged: false},
+        "Stick" :          {full_font_name: "Stick", display_name: "Stick", url: 'https://fonts.googleapis.com/css?family=Stick&subset=japanese', download: 'https://fonts.google.com/specimen/Stick', recommended: true, bugged: false},
+        "Yusei-Magic" :    {full_font_name: "Yusei Magic", display_name: "Yusei Magic", url: 'https://fonts.googleapis.com/css?family=Yusei+Magic&subset=japanese', download: 'https://fonts.google.com/specimen/Yusei+MagicYusei+Magic', recommended: false, bugged: false},
+        "Kaisei-Decol" :   {full_font_name: "Kaisei Decol", display_name: "Kaisei Decol", url: 'https://fonts.googleapis.com/css?family=Kaisei+Decol&subset=japanese', download: 'https://fonts.google.com/specimen/Kaisei+Decol', recommended: false, bugged: false},
+        "Kaisei-Tokumin" : {full_font_name: "Kaisei Tokumin", display_name: "Kaisei Tokumin", url: 'https://fonts.googleapis.com/css?family=Kaisei+Tokumin&subset=japanese', download: 'https://fonts.google.com/specimen/Kaisei+Tokumin', recommended: false, bugged: false},
         // AdobeFonts
-        "AB-Andante" : {full_font_name: "ab-andante", display_name: "AB Andante", url: 'adobe', download: 'http://www.font1000.com', recommended: false},
-        "AB-Appare" : {full_font_name: "ab-appare", display_name: "AB Appare", url: 'adobe', download: 'https://fonts.adobe.com/foundries/tegakiya-honpo', recommended: false},
-        "AB-Karuta-El" : {full_font_name: "ab-karuta-el", display_name: "AB Karuta El", url: 'adobe', download: 'http://www.font1000.com', recommended: false},
-        "AB-Kikori" : {full_font_name: "ab-kikori", display_name: "AB Kikori", url: 'adobe', download: 'http://www.font1000.com', recommended: false},
-        "AB-Kouran-Gyosho" : {full_font_name: "ab-kouran-gyosho", display_name: "AB Kouran Gyosho", url: 'adobe', download: 'https://fonts.adobe.com/foundries/tegakiya-honpo', recommended: false},
-        "AB-Shinyubipenjigyosyotai" : {full_font_name: "ab-shinyubipenjigyosyotai", display_name: "AB Shinyubipenjigyosyotai", url: 'adobe', download: 'https://fonts.adobe.com/foundries/tegakiya-honpo', recommended: false},
-        "Hakusyu-Sosho" : {full_font_name: "hot-soshokk, HakusyuSosho", display_name: "Hakusyu Sosho", url: 'adobe', download: 'https://www.hakusyu.com/download_education.htm', recommended: true},
-        "Hakusyu-Tensho" : {full_font_name: "hot-tenshokk, HakusyuTensho", display_name: "Hakusyu Tensho", url: 'adobe', download: 'https://www.hakusyu.com/download_education.htm', recommended: false},
+        "AB-Andante" :                {full_font_name: "ab-andante", display_name: "AB Andante", url: 'adobe', download: 'http://www.font1000.com', recommended: false, bugged: true},
+        "AB-Appare" :                 {full_font_name: "ab-appare", display_name: "AB Appare", url: 'adobe', download: 'https://fonts.adobe.com/foundries/tegakiya-honpo', recommended: false, bugged: false},
+        "AB-Karuta-El" :              {full_font_name: "ab-karuta-el", display_name: "AB Karuta El", url: 'adobe', download: 'http://www.font1000.com', recommended: false, bugged: true},
+        "AB-Kikori" :                 {full_font_name: "ab-kikori", display_name: "AB Kikori", url: 'adobe', download: 'http://www.font1000.com', recommended: false, bugged: true},
+        "AB-Kouran-Gyosho" :          {full_font_name: "ab-kouran-gyosho", display_name: "AB Kouran Gyosho", url: 'adobe', download: 'https://fonts.adobe.com/foundries/tegakiya-honpo', recommended: false, bugged: true},
+        "AB-Shinyubipenjigyosyotai" : {full_font_name: "ab-shinyubipenjigyosyotai", display_name: "AB Shinyubipenjigyosyotai", url: 'adobe', download: 'https://fonts.adobe.com/foundries/tegakiya-honpo', recommended: false, bugged: false},
+        "Hakusyu-Sosho" :             {full_font_name: "hot-soshokk, HakusyuSosho", display_name: "Hakusyu Sosho", url: 'adobe', download: 'https://www.hakusyu.com/download_education.htm', recommended: true, bugged: false},
+        "Hakusyu-Tensho" :            {full_font_name: "hot-tenshokk, HakusyuTensho", display_name: "Hakusyu Tensho", url: 'adobe', download: 'https://www.hakusyu.com/download_education.htm', recommended: false, bugged: false},
         // Other popular fonts
-        "ArmedBanana" : {full_font_name: "ArmedBanana", display_name: "Armed Banana", url: 'https://marciska.github.io/Jitai-Fonts/ArmedBanana.css', download: 'http://calligra-tei.oops.jp/download.html', recommended: true},
-        "ArmedLemon" : {full_font_name: "ArmedLemon", display_name: "Armed Lemon", url: 'https://marciska.github.io/Jitai-Fonts/ArmedLemon.css', download: 'http://calligra-tei.oops.jp/download.html', recommended: false},
-        "Aoyagi-Reisho" : {full_font_name: "Aoyagi Reisho, Aoyagi Reisyo, aoyagireisyo2, aoyagireisyosimo2", display_name: "Aoyagi Reisho", url: 'https://marciska.github.io/Jitai-Fonts/AoyagiReisyo.css', download: 'https://opentype.jp/aoyagireisho.htm', recommended: false},
-        "Aoyagi-Gyousho" : {full_font_name: "KouzanBrushFontGyousyoOTF, AoyagiKouzanFont2OTF, Aoyagi Gyousyo, Aoyagi Gyousho", display_name: "Aoyagi Gyousho", url: 'https://marciska.github.io/Jitai-Fonts/AoyagiGyousyo.css', download: 'https://opentype.jp/kouzangyousho.htm', recommended: false},
-        "Aquafont" : {full_font_name: "Aquafont, aquafont", display_name: "Aquafont", url: 'https://marciska.github.io/Jitai-Fonts/Aquafont.css', download: 'https://www.freejapanesefont.com/aqua-font/', recommended: false},
-        "Chifont" : {full_font_name: "'chifont+', chifont, Nchifont, 'Nchifont+'", display_name: "Chifont", url: 'local', download: 'https://welina.xyz/font/tegaki/nchif/', recommended: false},
-        "Chihaya-Gothic" : {full_font_name: "ChihayaGothic", display_name: "Chihaya Gothic", url: 'local', download: 'https://welina.xyz/font/tegaki/gothic/', recommended: false},
-        "Cinecaption" : {full_font_name: "cinecaption", display_name: "Cinecaption", url: 'local', download: 'https://cooltext.com/Download-Font-しねきゃぷしょん+cinecaption', recommended: false},
-        "Darts" : {full_font_name: "DartsFont, 'darts font'", display_name: "Darts Font", url: 'https://marciska.github.io/Jitai-Fonts/DartsFont.css', download: 'https://www.p-darts.jp/font/dartsfont/', recommended: false},
-        "EPSON-行書体Ｍ" :   {full_font_name: "EPSON 行書体Ｍ",  display_name: "EPSON 行書体Ｍ",   url: 'local', download: '', recommended: false},
-        "EPSON-正楷書体Ｍ" : {full_font_name: "EPSON 正楷書体Ｍ", display_name: "EPSON 正楷書体Ｍ", url: 'local', download: '', recommended: false},
-        "EPSON-教科書体Ｍ" : {full_font_name: "EPSON 教科書体Ｍ", display_name: "EPSON 教科書体Ｍ", url: 'local', download: '', recommended: false},
-        "EPSON-太明朝体Ｂ" : {full_font_name: "EPSON 太明朝体Ｂ", display_name: "EPSON 太明朝体Ｂ", url: 'local', download: '', recommended: false},
-        "EPSON-太行書体Ｂ" : {full_font_name: "EPSON 太行書体Ｂ", display_name: "EPSON 太行書体Ｂ", url: 'local', download: '', recommended: false},
-        "EPSON-丸ゴシック体Ｍ" : {full_font_name: "EPSON 丸ゴシック体Ｍ", display_name: "EPSON 丸ゴシック体Ｍ", url: 'local', download: '', recommended: false},
-        "FC-Flower" : {full_font_name: "FC-Flower", display_name: "FC-Flower (Experimental)", url: 'local', download: 'https://web.archive.org/web/20200718072012/http://fscolor.happy.nu/font/fl.html', recommended: false},
-        "Hakusyu-Kaisho-Bold" : {full_font_name: "HakusyuKaisyoExtraBold_kk", display_name: "Hakusyu Kaisho Bold", url: 'local', download: 'https://www.hakusyu.com/download_education.htm', recommended: false},
-        "Hoso-Fuwa" : {full_font_name: "Hosofuwafont", display_name: "Hoso Fuwa", url: 'https://marciska.github.io/Jitai-Fonts/HosoFuwa.css', download: 'https://huwahuwa.ff-design.net/ほそふわフォント/', recommended: false},
-        "Nagayama-Kai" : {full_font_name: "Nagayama Kai, nagayama_kai", display_name: "Nagayama Kai", url: 'https://marciska.github.io/Jitai-Fonts/NagayamaKai.css', download: 'https://www.bokushin.org/en/nagayama-sensei-font/', recommended: false},
-        "Pop-Rum-Cute" : {full_font_name: "PopRumCute", display_name: "Pop Rum Cute", url: 'https://marciska.github.io/Jitai-Fonts/PopRumCute.css', download: 'https://moji-waku.com/poprumcute/', recommended: false},
-        "Ronde-B-Square" : {full_font_name: "Ronde B Square, Ronde-B, Ronde-B-Square", display_name: "Ronde B square", url: 'https://marciska.github.io/Jitai-Fonts/PopRumCute.css', download: 'https://moji-waku.com/poprumcute/', recommended: false},
-        "San-Chou-Me" : {full_font_name: "San Chou Me, santyoume-font", display_name: "San Chou Me", url: 'https://marciska.github.io/Jitai-Fonts/SanChouMe.css', download: 'https://web.archive.org/web/20190330133455/http://www.geocities.jp/bokurano_yume/', recommended: false},
+        "ArmedBanana" :          {full_font_name: "ArmedBanana", display_name: "Armed Banana", url: 'https://marciska.github.io/Jitai-Fonts/ArmedBanana.css', download: 'http://calligra-tei.oops.jp/download.html', recommended: true, bugged: false},
+        "ArmedLemon" :           {full_font_name: "ArmedLemon", display_name: "Armed Lemon", url: 'https://marciska.github.io/Jitai-Fonts/ArmedLemon.css', download: 'http://calligra-tei.oops.jp/download.html', recommended: false, bugged: false},
+        "Aoyagi-Reisho" :        {full_font_name: "Aoyagi Reisho, Aoyagi Reisyo, aoyagireisyo2, aoyagireisyosimo2", display_name: "Aoyagi Reisho", url: 'https://marciska.github.io/Jitai-Fonts/AoyagiReisyo.css', download: 'https://opentype.jp/aoyagireisho.htm', recommended: false, bugged: false},
+        "Aoyagi-Gyousho" :       {full_font_name: "KouzanBrushFontGyousyoOTF, AoyagiKouzanFont2OTF, Aoyagi Gyousyo, Aoyagi Gyousho", display_name: "Aoyagi Gyousho", url: 'https://marciska.github.io/Jitai-Fonts/AoyagiGyousyo.css', download: 'https://opentype.jp/kouzangyousho.htm', recommended: false, bugged: false},
+        "Aquafont" :             {full_font_name: "Aquafont, aquafont", display_name: "Aquafont", url: 'https://marciska.github.io/Jitai-Fonts/Aquafont.css', download: 'https://www.freejapanesefont.com/aqua-font/', recommended: false, bugged: false},
+        "Chifont" :              {full_font_name: "'chifont+', chifont, Nchifont, 'Nchifont+'", display_name: "Chifont", url: 'local', download: 'https://welina.xyz/font/tegaki/nchif/', recommended: false, bugged: false},
+        "Chihaya-Gothic" :       {full_font_name: "ChihayaGothic", display_name: "Chihaya Gothic", url: 'local', download: 'https://welina.xyz/font/tegaki/gothic/', recommended: false, bugged: false},
+        "Cinecaption" :          {full_font_name: "cinecaption", display_name: "Cinecaption", url: 'local', download: 'https://cooltext.com/Download-Font-しねきゃぷしょん+cinecaption', recommended: false, bugged: false},
+        "Darts" :                {full_font_name: "DartsFont, darts font", display_name: "Darts Font", url: 'https://marciska.github.io/Jitai-Fonts/DartsFont.css', download: 'https://www.p-darts.jp/font/dartsfont/', recommended: false, bugged: false},
+        "EPSON-行書体Ｍ" :         {full_font_name: "EPSON 行書体Ｍ",  display_name: "EPSON 行書体Ｍ",   url: 'local', download: '', recommended: false, bugged: false},
+        "EPSON-正楷書体Ｍ" :       {full_font_name: "EPSON 正楷書体Ｍ", display_name: "EPSON 正楷書体Ｍ", url: 'local', download: '', recommended: false, bugged: false},
+        "EPSON-教科書体Ｍ" :       {full_font_name: "EPSON 教科書体Ｍ", display_name: "EPSON 教科書体Ｍ", url: 'local', download: '', recommended: false, bugged: false},
+        "EPSON-太明朝体Ｂ" :       {full_font_name: "EPSON 太明朝体Ｂ", display_name: "EPSON 太明朝体Ｂ", url: 'local', download: '', recommended: false, bugged: false},
+        "EPSON-太行書体Ｂ" :       {full_font_name: "EPSON 太行書体Ｂ", display_name: "EPSON 太行書体Ｂ", url: 'local', download: '', recommended: false, bugged: false},
+        "EPSON-丸ゴシック体Ｍ" :    {full_font_name: "EPSON 丸ゴシック体Ｍ", display_name: "EPSON 丸ゴシック体Ｍ", url: 'local', download: '', recommended: false, bugged: false},
+        "FC-Flower" :            {full_font_name: "FC-Flower", display_name: "FC-Flower", url: 'https://marciska.github.io/Jitai-Fonts/FCFlower.css', download: 'https://web.archive.org/web/20200718072012/http://fscolor.happy.nu/font/fl.html', recommended: false, bugged: true},
+        "Hakusyu-Kaisho-Bold" :  {full_font_name: "HakusyuKaisyoExtraBold_kk", display_name: "Hakusyu Kaisho Bold", url: 'local', download: 'https://www.hakusyu.com/download_education.htm', recommended: false, bugged: false},
+        "Hoso-Fuwa" :            {full_font_name: "Hosofuwafont", display_name: "Hoso Fuwa", url: 'https://marciska.github.io/Jitai-Fonts/HosoFuwa.css', download: 'https://huwahuwa.ff-design.net/ほそふわフォント/', recommended: false, bugged: false},
+        "Nagayama-Kai" :         {full_font_name: "Nagayama Kai, nagayama_kai", display_name: "Nagayama Kai", url: 'https://marciska.github.io/Jitai-Fonts/NagayamaKai.css', download: 'https://www.bokushin.org/en/nagayama-sensei-font/', recommended: false, bugged: false},
+        "Pop-Rum-Cute" :         {full_font_name: "PopRumCute", display_name: "Pop Rum Cute", url: 'https://marciska.github.io/Jitai-Fonts/PopRumCute.css', download: 'https://moji-waku.com/poprumcute/', recommended: false, bugged: false},
+        "Ronde-B-Square" :       {full_font_name: "Ronde B Square, Ronde-B, Ronde-B-Square", display_name: "Ronde B square", url: 'https://marciska.github.io/Jitai-Fonts/RondeBSquare.css', download: 'https://moji-waku.com/poprumcute/', recommended: false, bugged: false},
+        "San-Chou-Me" :          {full_font_name: "San Chou Me, santyoume-font", display_name: "San Chou Me", url: 'https://marciska.github.io/Jitai-Fonts/SanChouMe.css', download: 'https://web.archive.org/web/20190330133455/http://www.geocities.jp/bokurano_yume/', recommended: false, bugged: false},
     };
 
     // fonts that are selected by user to be shown
@@ -118,7 +118,7 @@
         dialog.dialog({width:720});
     }
     async function settingsSave(settings) {
-        await wkof.Settings.save(script_id); //.then(settingsApply).then(settingsClose);
+        await wkof.Settings.save(script_id);
         settingsApply(settings);
         settingsClose(settings);
     }
@@ -158,7 +158,7 @@
                 if (frequency === undefined) { frequency = 1; } // if script started first time, the value might be undefined
                 frequency = Math.ceil(frequency);
                 for (let i = 0; i < frequency; i++) {
-                    font_pool_selected.push(value.full_font_name);
+                    font_pool_selected.push(value);
                 }
             }
         }
@@ -183,8 +183,13 @@
             } else if (value.url === 'adobe') { // ADOBE WEBFONT
                 fonts_available[fontkey] = value;
             } else { // GENERAL WEBFONT
-                installWebfont(value.full_font_name, value.url);
-                fonts_available[fontkey] = value;
+                if (isFontInstalled(value.full_font_name)) {
+                    fonts_available[fontkey] = value;
+                    fonts_available[fontkey].url = 'local';
+                } else {
+                    installWebfont(value.full_font_name, value.url);
+                    fonts_available[fontkey] = value;
+                }
             }
         }
 
@@ -200,7 +205,7 @@
         const font_available_selector = Object.fromEntries(fontkeys_available.map(fontkey => ['BOX_'+fontkey, {
             type: 'group',
             // label: `<span class="font_label${font_pool[fontkey].recommended ? ' font_recommended' : ''}">${font_pool[fontkey].display_name}</span>`,
-            label: `<span class="font_label${fonts_available[fontkey].recommended ? ' font_recommended' : ''}">${fonts_available[fontkey].display_name} ${fonts_available[fontkey].url !== 'local' ? '<a href="'+fonts_available[fontkey].download+'" target="_blank"><i class="webfont"></i></a>' : ''}</span>`,
+            label: `<span class="font_label${fonts_available[fontkey].recommended ? ' font_recommended' : ''}${fonts_available[fontkey].bugged ? ' font_bugged' : ''}">${fonts_available[fontkey].display_name} ${fonts_available[fontkey].url !== 'local' ? '<a href="'+fonts_available[fontkey].download+'" target="_blank"><i class="webfont"></i></a>' : ''}</span>`,
             content: {
                 sampletext: {
                     type: 'html',
@@ -223,7 +228,7 @@
         }]));
         const font_unavailable_selector = Object.fromEntries(fontkeys_unavailable.map(fontkey => ['BOX_'+fontkey, {
             type: 'html',
-            html: `<p class="font_label${fonts_unavailable[fontkey].recommended ? ' font_recommended' : ''}">${fonts_unavailable[fontkey].download !== '' ? '<a href="'+fonts_unavailable[fontkey].download+'" target="_blank"><i class="downloadfont"></i></a>' : ''}${fonts_unavailable[fontkey].display_name}</p>`,
+            html: `<p class="font_label${fonts_unavailable[fontkey].recommended ? ' font_recommended' : ''}${fonts_unavailable[fontkey].bugged ? ' font_bugged' : ''}">${fonts_unavailable[fontkey].download !== '' ? '<a href="'+fonts_unavailable[fontkey].download+'" target="_blank"><i class="downloadfont"></i></a>' : ''}${fonts_unavailable[fontkey].display_name}</p>`,
         }]));
 
         // prepare configuration dialog
@@ -236,17 +241,17 @@
             content: {
                 currentfont: {
                     type: 'group',
-                    label: `<span class="font_label">Current Font: ${font_randomized}</span>`,
+                    label: `<span class="font_label">Current Font: ${font_randomized.display_name}</span>`,
                     content: {
                         sampletext: {
                             type: 'html',
-                            html: `<p class="font_example" style="font-family: ${font_randomized}">${example_sentence}</p>`
+                            html: `<p class="font_example" style="font-family: ${font_randomized.full_font_name}">${example_sentence}</p>`
                         }
                     }
                 },
                 legend: {
                     type: 'html',
-                    html: `<div class="font_legend"><span class="font_recommended">: Recommended Font</span><span class="webfont">: Webfont (click to download)</span><span class="downloadfont">: Local font available for download if clicked</span></div>`
+                    html: `<div class="font_legend"><span class="font_recommended">: Recommended Font</span><span class="webfont">: Imported as webfont (click to download)</span><span><i class="font_bugged"></i>: Bugged on Safari (and Firefox if tracking prevention enabled)</span></div><p class="font_legend">Don't worry about fonts that don't come with all Kanjis (shown as invisible glyphs). Jitai will during review only choose fonts that can fully represent the current review item.</p>`
                 },
                 divider_available: {
                     type: 'section',
@@ -256,6 +261,10 @@
                 divider_unavailable: {
                     type: 'section',
                     label: `Local Fonts not found: ${fontkeys_unavailable.length}`
+                },
+                legend_fonts_unavailable: {
+                    type: 'html',
+                    html: `<div class="font_legend"><span class="downloadfont">: Local font available for download. Click on link to visit website.</span></div>`
                 },
                 ...font_unavailable_selector
             }
@@ -292,6 +301,16 @@
     
         return testWidth != defaultWidth;
     }
+    function checkIfWebfontsLocallyInstalled() {
+        // NOTE this function should run BEFORE addPreconnectLinks().
+        //      If it is run after, adobe-webfonts are falsely detected as local fonts
+        for (const fontkey of Object.keys(font_pool)) {
+            if (font_pool[fontkey].url === 'local') { return; }
+            if (isFontInstalled(font_pool[fontkey].full_font_name)) {
+                font_pool[fontkey].url = 'local';
+            }
+        }
+    }
 
     function isCanvasBlank(canvas) {
         return !canvas.getContext('2d')
@@ -299,25 +318,22 @@
             .some(channel => channel !== 0);
     }
     function canRepresentGlyphs(fontName, glyphs) {
-        var canvas = document.createElement('canvas');
+        let canvas = document.createElement('canvas');
         canvas.width = 50;
         canvas.height = 50;
-        var context = canvas.getContext("2d");
-        context.textBaseline = 'top';
-    
-        context.font = "24px " + fontName;
-    
-        var result = true;
-        for (var i = 0; i < glyphs.length; i++) {
-            context.fillText(glyphs[i], 0, 0);
-            if (isCanvasBlank(canvas)) {
-                result = false;
-                break;
-            }
-            context.clearRect(0, 0, canvas.width, canvas.height);
+        let ctx = canvas.getContext("2d");
+        ctx.textBaseline = 'top';
+        ctx.font = "24px " + fontName;
+        
+        // write each glyph on the canvas; if canvas is empty then glyph cannot be represented
+        // BUG on Safari, ctx.fillText() doesn't work with custom fonts (sometimes?!)
+        for (let i = 0; i < glyphs.length; i++) {
+            ctx.fillText(glyphs[i], 0, 0);
+            if (isCanvasBlank(canvas)) { return false; }
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
     
-        return result;
+        return true;
     }
 
     function installWebfont(font_name, url) {
@@ -358,40 +374,22 @@
         }
 
         // connect to AdobeFonts via their method
-        // document.head.insertAdjacentHTML('beforeend',
-        //     `<script>
-        //     (function(d) {
-        //       var config = {
-        //         kitId: 'xad5qou',
-        //         scriptTimeout: 3000,
-        //         async: true
-        //       },
-        //       h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
-        //     })(document);
-        //   </script>`
-        // );
-        let config = {
-            kitId: 'xad5qou',
-            scriptTimeout: 3000,
-            async: true
-        };
-        let h=document.documentElement;
-        let t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";}, config.scriptTimeout);
-        let tk=document.createElement("script");
-        let f=false;
-        let s=document.getElementsByTagName("script")[0];
-        let a;
-        h.className+=" wf-loading";
-        tk.src='https://use.typekit.net/'+config.kitId+'.js';
-        tk.async=true;
-        tk.onload=tk.onreadystatechange=function(){
-            a=this.readyState;
-            if(f||a&&a!="complete"&&a!="loaded") { return; }
-            f=true;
-            clearTimeout(t);
-            try{Typekit.load(config)}catch(e){}
-        };
-        s.parentNode.insertBefore(tk,s);
+        let script = document.getElementById("adobe_fonts_script");
+        if (!script) {
+            script = document.createElement("script");
+            script.setAttribute('id','adobe_fonts_script');
+            script.innerHTML = `
+                (function(d) {
+                    var config = {
+                        kitId: 'xad5qou',
+                        scriptTimeout: 3000,
+                        async: true
+                    },
+                    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+                })(document);
+            `;
+            document.head.appendChild(script);
+        }
     }
 
     function shuffleArray(array) {
@@ -409,19 +407,24 @@
                 console.log(script_name+': empty font pool!')
                 font_randomized = font_default;
             } else {
+                let i = 0;
                 do {
+                    i = i + 1;
                     font_randomized = font_pool_selected[Math.floor(Math.random() * font_pool_selected.length)];
-                } while (!canRepresentGlyphs(font_randomized, glyphs));
+                } while (!canRepresentGlyphs(font_randomized.full_font_name, glyphs) && i < 100);
+                if (i >= 100) {
+                    font_randomized = font_default;
+                }
             }
         }
 
         // show font
         if (hover_flipped) {
-            item_element.style.setProperty("--font-family-japanese", font_default);
-            item_element.style.setProperty("--font-family-japanese-hover", font_randomized);
+            item_element.style.setProperty("--font-family-japanese", font_default.full_font_name);
+            item_element.style.setProperty("--font-family-japanese-hover", font_randomized.full_font_name);
         } else {
-            item_element.style.setProperty("--font-family-japanese", font_randomized);
-            item_element.style.setProperty("--font-family-japanese-hover", font_default);
+            item_element.style.setProperty("--font-family-japanese", font_randomized.full_font_name);
+            item_element.style.setProperty("--font-family-japanese-hover", font_default.full_font_name);
         }
     }
 
@@ -431,7 +434,7 @@
         //  - hovering: default font
         let style = document.createElement("style");
         style.appendChild(document.createTextNode(".character-header__characters:hover { font-family: var(--font-family-japanese-hover); }"));
-        item_element.style.setProperty("--font-family-japanese-hover", font_default);
+        item_element.style.setProperty("--font-family-japanese-hover", font_default.full_font_name);
         document.head.appendChild(style);
         
         // on answer submission, invert hovering event
@@ -480,6 +483,7 @@
             wkof.include(wkof_modules);
             wkof
                 .ready(wkof_modules)
+                .then(checkIfWebfontsLocallyInstalled)
                 .then(addPreconnectLinks)
                 .then(registerJitaiEvents)
                 .then(settingsLoad)
@@ -505,7 +509,13 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 5px;
-                padding-left: 25% !important;
+                padding-left: 15% !important;
+            }
+            p.font_legend {
+                display: block;
+                text-align: start;
+                margin: 15px !important;
+                padding: 0px !important;
             }
             .font_example {
                 margin: 5px 10px 10px 10px !important;
@@ -514,6 +524,10 @@
             }
             .font_recommended::before {
                 content: '⭐️';
+                font-size: 1.4em;
+            }
+            .font_bugged::after {
+                content: '🐛';
                 font-size: 1.4em;
             }
             .webfont::before {
