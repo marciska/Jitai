@@ -3,7 +3,7 @@
 // @author      @marciska
 // @namespace   marciska
 // @description Displays your WaniKani reviews with randomized fonts (based on original by @obskyr)
-// @version     3.2.1
+// @version     3.2.2
 // @icon        https://raw.github.com/marciska/Jitai/master/imgs/jitai.ico
 // @match       https://*.wanikani.com/subjects/review*
 // @match       https://*.wanikani.com/subjects/extra_study*
@@ -69,8 +69,8 @@
         "AB-Karuta-El" :              {full_font_name: "ab-karuta-el", display_name: "AB Karuta El", url: 'adobe', download: 'http://www.font1000.com', recommended: false, bugged: true},
         "AB-Kikori" :                 {full_font_name: "ab-kikori", display_name: "AB Kikori", url: 'adobe', download: 'http://www.font1000.com', recommended: false, bugged: true},
         "AB-Kouran-Gyosho" :          {full_font_name: "ab-kouran-gyosho", display_name: "AB Kouran Gyosho", url: 'adobe', download: 'https://fonts.adobe.com/foundries/tegakiya-honpo', recommended: false, bugged: true},
-        "AB-Shinyubipenjigyosyotai" : {full_font_name: "ab-shinyubipenjigyosyotai", display_name: "AB Shinyubipenjigyosyotai", url: 'adobe', download: 'https://fonts.adobe.com/foundries/tegakiya-honpo', recommended: false, bugged: false},
-        "Hakusyu-Sosho" :             {full_font_name: "hot-soshokk, HakusyuSosho", display_name: "Hakusyu Sosho", url: 'adobe', download: 'https://www.hakusyu.com/download_education.htm', recommended: true, bugged: false},
+        "AB-Shinyubipenjigyosyotai" : {full_font_name: "ab-shinyubipenjigyosyotai", display_name: "AB Shinyubipenjigyosyotai", url: 'adobe', download: 'https://fonts.adobe.com/foundries/tegakiya-honpo', recommended: true, bugged: false},
+        "Hakusyu-Sosho" :             {full_font_name: "hot-soshokk, HakusyuSosho", display_name: "Hakusyu Sosho", url: 'adobe', download: 'https://www.hakusyu.com/download_education.htm', recommended: false, bugged: false},
         "Hakusyu-Tensho" :            {full_font_name: "hot-tenshokk, HakusyuTensho", display_name: "Hakusyu Tensho", url: 'adobe', download: 'https://www.hakusyu.com/download_education.htm', recommended: false, bugged: false},
         // Other popular fonts
         "ArmedBanana" :          {full_font_name: "ArmedBanana", display_name: "Armed Banana", url: 'https://marciska.github.io/Jitai-Fonts/ArmedBanana.css', download: 'http://calligra-tei.oops.jp/download.html', recommended: true, bugged: false},
@@ -185,13 +185,13 @@
             } else if (value.url === 'adobe') { // ADOBE WEBFONT
                 fonts_available[fontkey] = value;
             } else { // GENERAL WEBFONT
-                if (isFontInstalled(value.full_font_name)) {
-                    fonts_available[fontkey] = value;
-                    fonts_available[fontkey].url = 'local';
-                } else {
-                    installWebfont(value.full_font_name, value.url);
-                    fonts_available[fontkey] = value;
-                }
+                // if (isFontInstalled(value.full_font_name)) {
+                    // fonts_available[fontkey] = value;
+                    // fonts_available[fontkey].url = 'local';
+                // } else {
+                installWebfont(value.full_font_name, value.url);
+                fonts_available[fontkey] = value;
+                // }
             }
         }
 
