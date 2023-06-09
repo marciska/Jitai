@@ -31,7 +31,7 @@
     const example_sentence = '質問：クモの味は何だと思う?<br>答え：・・・酸っぱいだ！（笑）';
     
     let font_default = {display_name:'Default Font', full_font_name:getDefaultFont()};
-    let font_randomized = font_default;
+    let font_randomized = [font_default];
 
     // available fonts
     let font_pool = {
@@ -165,9 +165,6 @@
             }
         }
 
-        // randomly shuffle font pool
-        shuffleArray(font_pool_selected);
-
         updateRandomFont(true);
     }
 
@@ -243,11 +240,11 @@
             content: {
                 currentfont: {
                     type: 'group',
-                    label: `<span class="font_label">Current Font: ${font_randomized.display_name}</span>`,
+                    label: `<span class="font_label">Current Font: ${font_randomized[0].display_name}</span>`,
                     content: {
                         sampletext: {
                             type: 'html',
-                            html: `<p class="font_example" style="font-family: ${font_randomized.full_font_name}">${example_sentence}</p>`
+                            html: `<p class="font_example" style="font-family: ${font_randomized[0].full_font_name}">${example_sentence}</p>`
                         }
                     }
                 },
@@ -401,31 +398,32 @@
         }
     }
 
+    function makeFontRandomizedString() {
+        return font_randomized.map((f) => f.full_font_name).join(',')
+    }
+
     function updateRandomFont(update) {
         // choose new random font
         if (update) {
             const glyphs = item_element.innerText;
             if (font_pool_selected.length == 0) {
                 console.log(script_name+': empty font pool!')
-                font_randomized = font_default;
+                font_randomized = [font_default];
             } else {
-                let i = 0;
-                do {
-                    i = i + 1;
-                    font_randomized = font_pool_selected[Math.floor(Math.random() * font_pool_selected.length)];
-                } while (!canRepresentGlyphs(font_randomized.full_font_name, glyphs) && i < 100);
-                if (i >= 100) {
-                    font_randomized = font_default;
-                }
+                const f0 = font_randomized.shift();
+                font_randomized = font_pool_selected.filter((f) => f !== f0 && canRepresentGlyphs(f.full_font_name, glyphs));
+                shuffleArray(font_randomized);
+                font_randomized.push(f0);
+                font_randomized.push(font_default);
             }
         }
 
         // show font
         if (hover_flipped) {
             item_element.style.setProperty("--font-family-japanese", font_default.full_font_name);
-            item_element.style.setProperty("--font-family-japanese-hover", font_randomized.full_font_name);
+            item_element.style.setProperty("--font-family-japanese-hover", makeFontRandomizedString());
         } else {
-            item_element.style.setProperty("--font-family-japanese", font_randomized.full_font_name);
+            item_element.style.setProperty("--font-family-japanese", makeFontRandomizedString());
             item_element.style.setProperty("--font-family-japanese-hover", font_default.full_font_name);
         }
     }
@@ -446,12 +444,24 @@
             hover_flipped = true;
             updateRandomFont(false);
         });
-        
+
         // on advancing to next item question, randomize font again
         global.addEventListener("willShowNextQuestion", function(event)
         {
             hover_flipped = false;
             updateRandomFont(true);
+
+            const characterEl = document.querySelector(".character-header__characters");
+            if (characterEl && !characterEl.onclick) {
+                characterEl.onclick = () => {
+                    updateRandomFont(true);
+                    item_element.style.setProperty("--font-family-japanese-hover", makeFontRandomizedString());
+                    characterEl.onmouseleave = () => {
+                        updateRandomFont(false);
+                        characterEl.onmouseleave = null;
+                    }
+                };
+            }
         });
         
         // on reverting an answer by DoubleCheckScript, reroll random font and fix inverting of hovering
