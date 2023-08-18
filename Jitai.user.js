@@ -393,6 +393,22 @@
                 updateRandomFont(true);
             }
         });
+
+        // invert shown font while shift key held
+        global.addEventListener("keydown", function(event)
+        {
+            if (event.key === "Shift") {
+                hover_flipped = !hover_flipped;
+                updateRandomFont(false);
+            }
+        });
+        global.addEventListener("keyup", function(event)
+        {
+            if (event.key === "Shift") {
+                hover_flipped = !hover_flipped;
+                updateRandomFont(false);
+            }
+        });
     }
 
     //===================================================================
