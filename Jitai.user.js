@@ -31,6 +31,7 @@
     
     let font_default = getDefaultFont();
     let font_randomized = font_default;
+    let hovering = false;
 
     // available fonts
     let font_pool = {
@@ -347,11 +348,9 @@
 
         // show font
         if (hover_flipped) {
-            item_element.style.setProperty("--font-family-japanese", font_default);
-            item_element.style.setProperty("--font-family-japanese-hover", font_randomized);
+            item_element.style.fontFamily = hovering ? font_randomized : font_default;
         } else {
-            item_element.style.setProperty("--font-family-japanese", font_randomized);
-            item_element.style.setProperty("--font-family-japanese-hover", font_default);
+            item_element.style.fontFamily = hovering ? font_default : font_randomized;
         }
     }
 
@@ -360,9 +359,17 @@
         //  - normal  : randomized font
         //  - hovering: default font
         let style = document.createElement("style");
-        style.appendChild(document.createTextNode(".character-header__characters:hover { font-family: var(--font-family-japanese-hover); }"));
-        item_element.style.setProperty("--font-family-japanese-hover", font_default);
+        item_element.style.fontFamily = font_default;
         document.head.appendChild(style);
+
+        item_element.addEventListener("mouseenter", function() {
+            hovering = true;
+            updateRandomFont(false);
+        });
+        item_element.addEventListener("mouseleave", function() {
+            hovering = false;
+            updateRandomFont(false);
+        });
         
         // on answer submission, invert hovering event
         //  - normal  : default font
