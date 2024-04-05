@@ -360,7 +360,7 @@
         //  - normal  : randomized font
         //  - hovering: default font
         let style = document.createElement("style");
-        style.appendChild(document.createTextNode(".character-header__characters:hover { font-family: var(--font-family-japanese-hover); }"));
+        style.appendChild(document.createTextNode(".character-header__characters { font-family: var(--font-family-japanese); } .character-header__characters:hover { font-family: var(--font-family-japanese-hover); }"));
         item_element.style.setProperty("--font-family-japanese-hover", font_default);
         document.head.appendChild(style);
         
