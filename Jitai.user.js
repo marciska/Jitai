@@ -397,7 +397,7 @@
         // invert shown font while shift key held
         global.addEventListener("keydown", function(event)
         {
-            if (event.key === "Shift") {
+            if (!event.repeat && event.key === "Shift") {
                 hover_flipped = !hover_flipped;
                 updateRandomFont(false);
             }
