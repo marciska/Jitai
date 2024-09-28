@@ -2,11 +2,11 @@
 // @name        Jitai
 // @author      @marciska
 // @namespace   marciska
-// @description Displays your WaniKani reviews with randomized fonts (based on original by @obskyr)
-// @version     3.2.0
+// @description Displays your WaniKani reviews with randomized fonts (based on original by @obskyr, and community-maintained)
+// @version     3.2.1
 // @icon        https://raw.github.com/marciska/Jitai/master/imgs/jitai.ico
-// @match       https://*.wanikani.com/subjects/review*
-// @match       https://*.wanikani.com/subjects/extra_study*
+// @match       https://www.wanikani.com/*
+// @match       https://preview.wanikani.com/*
 // @license     MIT; http://opensource.org/licenses/MIT
 // @run-at      document-end
 // @grant       none
@@ -23,15 +23,19 @@
     //-------------------------------------------------------------------
     const script_id = "jitai";
     const script_name = "Jitai";
-
-    const item_element = document.getElementsByClassName("character-header__characters")[0];
-
-    // ----- Fonts -----
+    const wkof_version_needed = '1.2.0';
+    const listenerOptions = { passive: true };
+    const pageRegex = /^\/subjects\/(?:review.*\/?|extra_study)$/;
     const example_sentence = '質問：クモの味は何だと思う?<br>答え：・・・酸っぱいだ！（笑）';
+    let item_element;
+    let style_element;
+    let setup_complete = false;
 
-    let font_default = {display_name:'Default Font', full_font_name:getDefaultFont()};
-    let font_randomized = font_default;
-    let hovering = false;
+    // ----- States -----
+    let font_default; // will be set on review page load
+    let font_randomized; // will be set dynamically, earliest on review page load
+    let hover_flipped = false; // bool indicating if hovering effect is flipped
+    let modifier_held = false; // bool indicating if a modifier key is being held down
 
     // available fonts
     let font_pool = {
@@ -95,9 +99,6 @@
     // fonts that are selected by user to be shown
     let font_pool_selected = [];
 
-    // bool indicating if hovering effect is flipped
-    let hover_flipped = false;
-
     //===================================================================
     // Settings related stuff
     //-------------------------------------------------------------------
@@ -120,7 +121,8 @@
         settingsClose(settings);
     }
     async function settingsLoad() {
-        wkof.Settings.load(script_id).then(settingsApply);
+        const settings = await wkof.Settings.load(script_id);
+        settingsApply(settings);
     }
     function settingsClose(settings) {
         // Remove all urls to fonts we don't use
@@ -137,6 +139,7 @@
     function settingsApply(settings) {
         // clear cache of selected fonts
         font_pool_selected = [];
+
         // now refill the pool of selected fonts
         for (const [fontkey, value] of Object.entries(font_pool)) {
             if (!(fontkey in settings)) { continue; }
@@ -163,7 +166,11 @@
         // randomly shuffle font pool
         shuffleArray(font_pool_selected);
 
-        updateRandomFont(true);
+        // apply random font again, but only if on matching page
+        if (setup_complete && pageRegex.test(document.URL)) {
+            updateRandomFont();
+            setflippedFontState();
+        }
     }
 
     function settingsOpen() {
@@ -269,13 +276,9 @@
         dialog.open();
     }
 
-    //===================================================================
+    // ===================================================================
     // Main Script Functionality
-    //-------------------------------------------------------------------
-
-    function getDefaultFont() {
-        return getComputedStyle(item_element).fontFamily;
-    }
+    // ===================================================================
 
     function isFontInstalled(font_name) {
         // Approach from kirupa.com/html5/detect_whether_font_is_installed.htm - thanks!
@@ -296,7 +299,7 @@
         }
         var testWidth = context.measureText(text).width;
 
-        return testWidth != defaultWidth;
+        return testWidth !== defaultWidth;
     }
     function checkIfWebfontsLocallyInstalled() {
         // NOTE this function should run BEFORE addPreconnectLinks().
@@ -310,7 +313,7 @@
     }
 
     function isCanvasBlank(canvas) {
-        return !canvas.getContext('2d')
+        return !canvas.getContext('2d', { willReadFrequently: true })
             .getImageData(0, 0, canvas.width, canvas.height).data
             .some(channel => channel !== 0);
     }
@@ -318,7 +321,7 @@
         let canvas = document.createElement('canvas');
         canvas.width = 50;
         canvas.height = 50;
-        let ctx = canvas.getContext("2d");
+        let ctx = canvas.getContext("2d", { willReadFrequently: true });
         ctx.textBaseline = 'top';
         ctx.font = "24px " + fontName;
 
@@ -396,79 +399,168 @@
         }
     }
 
-    function updateRandomFont(update) {
+    function updateRandomFont() {
         // choose new random font
-        if (update) {
-            const glyphs = item_element.innerText;
-            if (font_pool_selected.length == 0) {
-                console.log(script_name+': empty font pool!')
+        const glyphs = item_element.innerText;
+        if (font_pool_selected.length === 0) {
+            console.log(script_name+': empty font pool!')
+            font_randomized = font_default;
+        } else {
+            let i = 0;
+            do {
+                i = i + 1;
+                font_randomized = font_pool_selected[Math.floor(Math.random() * font_pool_selected.length)];
+            } while (!canRepresentGlyphs(font_randomized.full_font_name, glyphs) && i < 100);
+            if (i >= 100) {
                 font_randomized = font_default;
-            } else {
-                let i = 0;
-                do {
-                    i = i + 1;
-                    font_randomized = font_pool_selected[Math.floor(Math.random() * font_pool_selected.length)];
-                } while (!canRepresentGlyphs(font_randomized.full_font_name, glyphs) && i < 100);
-                if (i >= 100) {
-                    font_randomized = font_default;
-                }
             }
         }
+        style_element.innerHTML = style_element.innerHTML.replace(/(--font-family-japanese:).*;([\s\S]*?--font-family-japanese-hover:).*;/,`$1 ${font_randomized.full_font_name};$2 ${font_default.full_font_name};`);
+    }
 
-        // show font
-        if (hover_flipped) {
-            item_element.style.fontFamily = hovering ? font_randomized.full_font_name : font_default.full_font_name;
-        } else {
-            item_element.style.fontFamily = hovering ? font_default.full_font_name : font_randomized.full_font_name;
+    function setflippedFontState() {
+        const flipped = hover_flipped ? !modifier_held : modifier_held;
+        item_element.classList.toggle('flipped', flipped);
+    }
+
+    function insertStyle() {
+        // insert CSS
+        if ((style_element = document.getElementById(`${script_id}-style`)) != null) return;
+        style_element = document.createElement('style');
+        style_element.setAttribute('id', `${script_id}-style`);
+        style_element.innerHTML = `
+.font_label {
+    font-size: 1.2em;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+.font_label a:link, .font_label a:visited, .font_label a:hover, .font_label a:active, .font_label a i {
+    text-decoration: none;
+}
+a i {
+    font-style: normal;
+}
+.font_legend {
+    text-align: center;
+    margin: 15px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    padding-left: 5% !important;
+}
+p.font_legend {
+    display: block;
+    text-align: start;
+    margin: 15px !important;
+    padding: 0px !important;
+}
+.font_example {
+    margin: 5px 10px 10px 10px !important;
+    font-size: 1.6em;
+    line-height: 1.1em;
+}
+.font_recommended::before {
+    content: '⭐️';
+    font-size: 1.4em;
+}
+.font_bugged::after {
+    content: '🐛';
+    font-size: 1.4em;
+}
+.downloadfont::before {
+    content: '⬇️';
+    font-size: 1.4em;
+}
+.character-header__characters:hover { font-family: var(--font-family-japanese-hover); }
+.character-header__characters.flipped { font-family: var(--font-family-japanese-hover); }
+.character-header__characters.flipped:hover { font-family: var(--font-family-japanese); }
+`;
+        document.head.appendChild(style_element);
+    }
+
+    function cacheDefaultElementStyles() {
+        if (font_default !== undefined && font_randomized !== undefined) return;
+        item_element = document.getElementsByClassName("character-header__characters")[0];
+        if (!item_element) return;
+
+        // set default states
+        font_default = {display_name:'Default Font', full_font_name:getComputedStyle(item_element).fontFamily};
+        font_randomized = font_default;
+    }
+
+    //----------
+    // Events
+    //----------
+
+    function onKeyDown(event) { // defines short-hand commands like re-roll font and show default font
+        if (event.repeat) return;
+        switch (event.key) {
+            // on holding ctrl and shift, swap the shown font
+            case 'Control':
+            case 'Shift':
+                if (!event.ctrlKey || !event.shiftKey) return;
+                modifier_held = true;
+                setflippedFontState();
+                break;
+            // on alt+j, update to a new random font
+            case 'j':
+                if (!event.altKey) return;
+                updateRandomFont();
+                setflippedFontState();
+                break;
+        }
+    }
+    function onKeyUp(event) { // if modifier keys are released, set modifier to false
+        if (event.repeat) return;
+        switch (event.key) {
+            case 'Control':
+            case 'Shift':
+                modifier_held = false;
+                setflippedFontState();
+                break;
+        }
+    }
+    function onLostFocus() {
+        modifier_held = false;
+        setflippedFontState();
+    }
+    function onDidAnswerQuestion() {
+        hover_flipped = true;
+        setflippedFontState();
+    }
+    function onDidUnanswerQuestion() {
+        hover_flipped = false;
+        updateRandomFont();
+        setflippedFontState();
+    }
+    function onWillShowNextQuestion() {
+        hover_flipped = false;
+        if (setup_complete) {
+            updateRandomFont();
+            setflippedFontState();
         }
     }
 
     function registerJitaiEvents() {
-        // on mouse hovering, show default font
-        //  - normal  : randomized font
-        //  - hovering: default font
-        let style = document.createElement("style");
-        item_element.style.fontFamily = font_default;
-        document.head.appendChild(style);
-
-        item_element.addEventListener("mouseenter", function() {
-            hovering = true;
-            updateRandomFont(false);
-        });
-        item_element.addEventListener("mouseleave", function() {
-            hovering = false;
-            updateRandomFont(false);
-        });
-        
         // on answer submission, invert hovering event
         //  - normal  : default font
         //  - hovering: randomized font
-        global.addEventListener("didAnswerQuestion", function(event) {
-            hover_flipped = true;
-            updateRandomFont(false);
-        });
-        
+        document.body.addEventListener("didAnswerQuestion", onDidAnswerQuestion, listenerOptions);
+
         // on advancing to next item question, randomize font again
-        global.addEventListener("willShowNextQuestion", function(event)
-        {
-            hover_flipped = false;
-            updateRandomFont(true);
-        });
-        
+        document.body.addEventListener("willShowNextQuestion", onWillShowNextQuestion, listenerOptions);
+
         // on reverting an answer by DoubleCheckScript, reroll random font and fix inverting of hovering
-        global.addEventListener("didUnanswerQuestion", function(event)
-        {
-            hover_flipped = false;
-            updateRandomFont(true);
-        });
-        
+        document.body.addEventListener("didUnanswerQuestion", onDidUnanswerQuestion, listenerOptions);
+
+        // add event to show regular font
         // add event to reroll randomized font
-        global.addEventListener("keydown", function(event)
-        {
-            if (event.ctrlKey && event.key === 'j') {
-                updateRandomFont(true);
-            }
-        });
+        document.body.addEventListener("keydown", onKeyDown, listenerOptions);
+        document.body.addEventListener("keyup", onKeyUp, listenerOptions);
+        // when page loses focus, revert any temporary modifications
+        document.body.addEventListener("blur", onLostFocus, listenerOptions);
     }
 
     //===================================================================
@@ -481,68 +573,39 @@
                 global.location.href = 'https://community.wanikani.com/t/instructions-installing-wanikani-open-framework/28549';
             }
             return;
-        } else {
-            const wkof_modules = 'Settings,Menu';
-            wkof.include(wkof_modules);
-            wkof
-                .ready(wkof_modules)
-                .then(checkIfWebfontsLocallyInstalled)
-                .then(addPreconnectLinks)
-                .then(registerJitaiEvents)
-                .then(settingsLoad)
-                .then(installSettingsMenu);
+        }
+        if (wkof.version.compare_to(wkof_version_needed) === 'older') {
+            if (confirm(script_name+' requires Wanikani Open Framework version '+wkof_version_needed+'.\nDo you want to be forwarded to the update page?')) {
+                global.location.href = 'https://greasyfork.org/en/scripts/38582-wanikani-open-framework';
+            }
+            return;
         }
 
-        // insert CSS
-        document.head.insertAdjacentHTML('beforeend',
-            `<style>
-            .font_label {
-                font-size: 1.2em;
-                display: flex;
-                gap: 5px;
-                align-items: center;
-            }
-            .font_label a:link, .font_label a:visited, .font_label a:hover, .font_label a:active, .font_label a i {
-                text-decoration: none;
-            }
-            a i {
-                font-style: normal;
-            }
-            .font_legend {
-                text-align: center;
-                margin: 15px !important;
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
-                padding-left: 5% !important;
-            }
-            p.font_legend {
-                display: block;
-                text-align: start;
-                margin: 15px !important;
-                padding: 0px !important;
-            }
-            .font_example {
-                margin: 5px 10px 10px 10px !important;
-                font-size: 1.6em;
-                line-height: 1.1em;
-            }
-            .font_recommended::before {
-                content: '⭐️';
-                font-size: 1.4em;
-            }
-            .font_bugged::after {
-                content: '🐛';
-                font-size: 1.4em;
-            }
-            .downloadfont::before {
-                content: '⬇️';
-                font-size: 1.4em;
-            }
-            </style>`
-        );
+        const wkof_modules = 'Settings';
+        wkof.include(wkof_modules);
+        return wkof
+            .ready(wkof_modules)
+            .then(checkIfWebfontsLocallyInstalled)
+            .then(addPreconnectLinks)
+            .then(settingsLoad)
+            .then(() => {setup_complete = true;});
     }
-    startup();
+
+    function onReviewsPage() {
+        const wkof_modules = 'Menu';
+        wkof.include(wkof_modules);
+        return wkof
+            .ready(wkof_modules)
+            .then(cacheDefaultElementStyles)
+            .then(insertStyle)
+            .then(registerJitaiEvents)
+            .then(installSettingsMenu)
+            .then(updateRandomFont)
+            .then(setflippedFontState);
+    }
+
+    startup().then(() => {
+        wkof.on_pageload(pageRegex, onReviewsPage);
+    });
 
 })(window);
