@@ -599,7 +599,12 @@ p.font_legend {
             .then(checkIfWebfontsLocallyInstalled)
             .then(addPreconnectLinks)
             .then(settingsLoad)
-            .then(() => {setup_complete = true;});
+            .then(() => {
+                setup_complete = true;
+                if (font_pool_selected.length === 0) {
+                    alert(script_name+' detected that you have no custom fonts selected. Click the cog on the top left to select some.\n\nIf you had some selected before and now they are suddenly gone... sorry, I\'m quite forgetful sometimes :\'(')
+                }
+            });
     }
 
     function onReviewsPage() {
