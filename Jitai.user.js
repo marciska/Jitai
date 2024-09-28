@@ -3,7 +3,7 @@
 // @author      @marciska
 // @namespace   marciska
 // @description Displays your WaniKani reviews with randomized fonts (based on original by @obskyr, and community-maintained)
-// @version     3.2.1
+// @version     3.3.0
 // @icon        https://raw.github.com/marciska/Jitai/master/imgs/jitai.ico
 // @match       https://www.wanikani.com/*
 // @match       https://preview.wanikani.com/*
@@ -112,7 +112,6 @@
     }
 
     function settingsPrepare(dialog) {
-        // dialog.dialog({width:720});
         dialog.dialog({width:500});
     }
     async function settingsSave(settings) {
@@ -167,6 +166,11 @@
         shuffleArray(font_pool_selected);
 
         // apply random font again, but only if on matching page
+        // let res = pageRegex.test(document.URL);
+        // console.log(script_name+': setup_complete='+setup_complete);
+        // console.log(script_name+': doc.url='+document.URL);
+        // console.log(script_name+': pageregex='+pageRegex);
+        // console.log(script_name+': pageregex result='+res);
         if (setup_complete && pageRegex.test(document.URL)) {
             updateRandomFont();
             setflippedFontState();
@@ -318,10 +322,10 @@
             .some(channel => channel !== 0);
     }
     function canRepresentGlyphs(fontName, glyphs) {
-        let canvas = document.createElement('canvas');
+        const canvas = document.createElement('canvas');
         canvas.width = 50;
         canvas.height = 50;
-        let ctx = canvas.getContext("2d", { willReadFrequently: true });
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
         ctx.textBaseline = 'top';
         ctx.font = "24px " + fontName;
 
@@ -351,7 +355,7 @@
     }
     function uninstallWebfont(font_name, url) {
         const link = document.querySelector(`link[href="${url}"]`);
-        if (!link) {
+        if (link!==null) {
             link.remove();
         }
     }
@@ -412,9 +416,11 @@
                 font_randomized = font_pool_selected[Math.floor(Math.random() * font_pool_selected.length)];
             } while (!canRepresentGlyphs(font_randomized.full_font_name, glyphs) && i < 100);
             if (i >= 100) {
+                console.log(script_name+': fallback -- setting default font due to consistent glyph errors');
                 font_randomized = font_default;
             }
         }
+        console.log(script_name+': updating random font to '+font_randomized.display_name);
         style_element.innerHTML = style_element.innerHTML.replace(/(--font-family-japanese:).*;([\s\S]*?--font-family-japanese-hover:).*;/,`$1 ${font_randomized.full_font_name};$2 ${font_default.full_font_name};`);
     }
 
@@ -472,6 +478,11 @@ p.font_legend {
 .downloadfont::before {
     content: '⬇️';
     font-size: 1.4em;
+}
+.character-header__characters {
+    --font-family-japanese: ;
+    --font-family-japanese-hover: ;
+    font-family: var(--font-family-japanese);
 }
 .character-header__characters:hover { font-family: var(--font-family-japanese-hover); }
 .character-header__characters.flipped { font-family: var(--font-family-japanese-hover); }
