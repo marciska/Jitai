@@ -165,7 +165,7 @@
                 }
             }
         }
-        console.log(script_name+': applying font pool of ' + font_pool_selected.length + ' fonts:\n'+font_pool_selected);
+        console.log(script_name+': applying font pool of ' + font_pool_selected.length + ' fonts:\n'+font_pool_selected.map(a => a.display_name));
 
         // randomly shuffle font pool
         shuffleArray(font_pool_selected);
