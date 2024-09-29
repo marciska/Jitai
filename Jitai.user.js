@@ -3,7 +3,7 @@
 // @author      @marciska
 // @namespace   marciska
 // @description Displays your WaniKani reviews with randomized fonts (based on original by @obskyr, and community-maintained)
-// @version     3.3.0
+// @version     3.3.1
 // @icon        https://raw.github.com/marciska/Jitai/master/imgs/jitai.ico
 // @match       https://www.wanikani.com/*
 // @match       https://preview.wanikani.com/*
@@ -23,9 +23,11 @@
     //-------------------------------------------------------------------
     const script_id = "jitai";
     const script_name = "Jitai";
-    const wkof_version_needed = '1.2.0';
+    const wkof_version_needed = '1.2.3';
     const listenerOptions = { passive: true };
-    const pageRegex = /^\/subjects\/(?:review.*\/?|extra_study)$/;
+    // const pageRegex = /^\/subjects\/(?:review.*\/?|extra_study)$/;
+    // const pageRegex = /^\/^(subjects\/(?:review.*\/?|extra_study)|recent-mistakes)$/;
+    const pageRegex = /^\/(subjects\/(?:review.*\/?|extra_study)$|recent-mistakes)/;
     const example_sentence = '質問：クモの味は何だと思う?<br>答え：・・・酸っぱいだ！（笑）';
     let item_element;
     let style_element;
@@ -115,11 +117,13 @@
         dialog.dialog({width:500});
     }
     async function settingsSave(settings) {
+        console.log(script_name+': saving settings');
         await wkof.Settings.save(script_id);
         settingsApply(settings);
         settingsClose(settings);
     }
     async function settingsLoad() {
+        console.log(script_name+': loading settings...');
         const settings = await wkof.Settings.load(script_id);
         settingsApply(settings);
     }
@@ -161,17 +165,13 @@
                 }
             }
         }
+        console.log(script_name+': applying font pool of ' + font_pool_selected.length + ' fonts:\n'+font_pool_selected);
 
         // randomly shuffle font pool
         shuffleArray(font_pool_selected);
 
         // apply random font again, but only if on matching page
-        // let res = pageRegex.test(document.URL);
-        // console.log(script_name+': setup_complete='+setup_complete);
-        // console.log(script_name+': doc.url='+document.URL);
-        // console.log(script_name+': pageregex='+pageRegex);
-        // console.log(script_name+': pageregex result='+res);
-        if (setup_complete && pageRegex.test(document.URL)) {
+        if (setup_complete && pageRegex.test(document.location.pathname)) {
             updateRandomFont();
             setflippedFontState();
         }
@@ -346,7 +346,8 @@
 
         // install webfont
         const link = document.querySelector(`link[href="${url}"]`);
-        if (!link) {
+        if (link===null) {
+            console.log(script_name+': installing webfont '+font_name);
             const newlink = document.createElement("link");
             newlink.href = url;
             newlink.rel = "stylesheet";
@@ -356,6 +357,7 @@
     function uninstallWebfont(font_name, url) {
         const link = document.querySelector(`link[href="${url}"]`);
         if (link!==null) {
+            console.log(script_name+': uninstalling webfont '+font_name);
             link.remove();
         }
     }
@@ -517,7 +519,8 @@ p.font_legend {
                 break;
             // on alt+j, update to a new random font
             case 'j':
-                if (!event.altKey) return;
+                if (!(event.altKey || event.ctrlKey)) return;
+                console.log(script_name+': pressed shortcut to re-roll random font');
                 updateRandomFont();
                 setflippedFontState();
                 break;
@@ -534,21 +537,28 @@ p.font_legend {
         }
     }
     function onLostFocus() {
+        console.log(script_name+': user lost focus, disabling modifier');
         modifier_held = false;
         setflippedFontState();
     }
     function onDidAnswerQuestion() {
+        console.log(script_name+': user answered question, show default font');
+        if (!pageRegex.test(document.location.pathname)) return;
         hover_flipped = true;
         setflippedFontState();
     }
     function onDidUnanswerQuestion() {
+        console.log(script_name+': user reverted answer by Double-Checker script, showing random font again');
+        if (!pageRegex.test(document.location.pathname)) return;
         hover_flipped = false;
         updateRandomFont();
         setflippedFontState();
     }
     function onWillShowNextQuestion() {
+        console.log(script_name+': about to show next question, re-rolling random font');
+        if (!pageRegex.test(document.location.pathname)) return;
         hover_flipped = false;
-        if (setup_complete) {
+        if (setup_complete) { // TODO: if check maybe not necessary, since event only triggered when setup already done?
             updateRandomFont();
             setflippedFontState();
         }
@@ -558,13 +568,13 @@ p.font_legend {
         // on answer submission, invert hovering event
         //  - normal  : default font
         //  - hovering: randomized font
-        document.body.addEventListener("didAnswerQuestion", onDidAnswerQuestion, listenerOptions);
+        window.addEventListener("didAnswerQuestion", onDidAnswerQuestion, listenerOptions); // event is dispatched for the window only
 
         // on advancing to next item question, randomize font again
-        document.body.addEventListener("willShowNextQuestion", onWillShowNextQuestion, listenerOptions);
+        window.addEventListener("willShowNextQuestion", onWillShowNextQuestion, listenerOptions); // event is dispatched for the window only
 
         // on reverting an answer by DoubleCheckScript, reroll random font and fix inverting of hovering
-        document.body.addEventListener("didUnanswerQuestion", onDidUnanswerQuestion, listenerOptions);
+        window.addEventListener("didUnanswerQuestion", onDidUnanswerQuestion, listenerOptions); // event is dispatched for the window only
 
         // add event to show regular font
         // add event to reroll randomized font
@@ -578,6 +588,8 @@ p.font_legend {
     // Script Startup
     //-------------------------------------------------------------------
     function startup() {
+        console.log(script_name+': Performing initial setup...');
+
         // initialization of the Wanikani Open Framework
         if (!wkof) {
             if (confirm(script_name+' requires Wanikani Open Framework.\nDo you want to be forwarded to the installation instructions?')) {
@@ -601,13 +613,12 @@ p.font_legend {
             .then(settingsLoad)
             .then(() => {
                 setup_complete = true;
-                if (font_pool_selected.length === 0) {
-                    alert(script_name+' detected that you have no custom fonts selected. Click the cog on the top left to select some.\n\nIf you had some selected before and now they are suddenly gone... sorry, I\'m quite forgetful sometimes :\'(')
-                }
+                console.log(script_name+': SETUP COMPLETE');
             });
-    }
-
-    function onReviewsPage() {
+        }
+        
+        function onReviewsPage() {
+        console.log(script_name+': moved to reviews page, caching elements and showing random font...');
         const wkof_modules = 'Menu';
         wkof.include(wkof_modules);
         return wkof
@@ -617,7 +628,12 @@ p.font_legend {
             .then(registerJitaiEvents)
             .then(installSettingsMenu)
             .then(updateRandomFont)
-            .then(setflippedFontState);
+            .then(setflippedFontState)
+            .then(() => {
+                if (font_pool_selected.length === 0) {
+                    alert(script_name+' detected that you have no custom fonts selected. Click the cog on the top left to select some.\n\nIf you had some selected before and now they are suddenly gone... sorry, I\'m quite forgetful sometimes :\'(')
+                }
+            });
     }
 
     startup().then(() => {
