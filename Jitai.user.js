@@ -48,9 +48,9 @@
         // Default Windows fonts
         "Meiryo" :            {full_font_name: "Meiryo, メイリオ", display_name: "Meiryo", url: 'local', download: '', recommended: false, bugged: false},
         "MS-Gothic" :         {full_font_name: "MS Gothic, ＭＳ ゴック", display_name: "MS Gothic", url: 'local', download: '', recommended: false, bugged: false},
-        "MS-PGothic" :        {full_font_name: "MS PGothic, ＭＳ Ｐゴシック", display_name: "MS Gothic", url: 'local', download: '', recommended: false, bugged: false},
+        "MS-PGothic" :        {full_font_name: "MS PGothic, ＭＳ Ｐゴシック", display_name: "MS PGothic", url: 'local', download: '', recommended: false, bugged: false},
         "MS-Mincho" :         {full_font_name: "MS Mincho, ＭＳ 明朝", display_name: "MS Mincho", url: 'local', download: '', recommended: false, bugged: false},
-        "MS-PMincho" :        {full_font_name: "MS PMincho, ＭＳ Ｐ明朝", display_name: "MS Mincho", url: 'local', download: '', recommended: false, bugged: false},
+        "MS-PMincho" :        {full_font_name: "MS PMincho, ＭＳ Ｐ明朝", display_name: "MS PMincho", url: 'local', download: '', recommended: false, bugged: false},
         "Yu-Gothic" :         {full_font_name: "Yu Gothic, YuGothic", display_name: "Yu Gothic", url: 'local', download: '', recommended: false, bugged: false},
         "Yu-Mincho" :         {full_font_name: "Yu Mincho, YuMincho", display_name: "Yu Mincho", url: 'local', download: '', recommended: false, bugged: false},
         "BIZ-UDGothic" :      {full_font_name: "BIZ UDGothic", display_name: "BIZ UDGothic", url: 'local', download: '', recommended: false, bugged: false},
