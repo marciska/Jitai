@@ -143,13 +143,13 @@
         dialog.dialog({width:500});
     }
     async function settingsSave(settings) {
-        console.log(script_name+': saving settings');
+        console.debug(script_name+': saving settings');
         await wkof.Settings.save(script_id);
         settingsApply(settings);
         settingsClose(settings);
     }
     async function settingsLoad() {
-        console.log(script_name+': loading settings...');
+        console.debug(script_name+': loading settings...');
         const settings = await wkof.Settings.load(script_id);
         settingsApply(settings);
     }
@@ -191,7 +191,7 @@
                 }
             }
         }
-        console.log(script_name+': applying font pool of ' + font_pool_selected.length + ' fonts:\n'+font_pool_selected.map(a => a.display_name));
+        console.debug(script_name+': applying font pool of ' + font_pool_selected.length + ' fonts:\n'+font_pool_selected.map(a => a.display_name));
 
         // randomly shuffle font pool
         shuffleArray(font_pool_selected);
@@ -373,7 +373,7 @@
         // install webfont
         const link = document.querySelector(`link[href="${url}"]`);
         if (link===null) {
-            console.log(script_name+': installing webfont '+font_name);
+            console.debug(script_name+': installing webfont '+font_name);
             const newlink = document.createElement("link");
             newlink.href = url;
             newlink.rel = "stylesheet";
@@ -383,7 +383,7 @@
     function uninstallWebfont(font_name, url) {
         const link = document.querySelector(`link[href="${url}"]`);
         if (link!==null) {
-            console.log(script_name+': uninstalling webfont '+font_name);
+            console.debug(script_name+': uninstalling webfont '+font_name);
             link.remove();
         }
     }
@@ -435,7 +435,7 @@
         // choose new random font
         const glyphs = item_element.innerText;
         if (font_pool_selected.length === 0) {
-            console.log(script_name+': empty font pool!')
+            console.warn(script_name+': empty font pool!')
             font_randomized = font_default;
         } else {
             let i = 0;
@@ -444,11 +444,11 @@
                 font_randomized = font_pool_selected[Math.floor(Math.random() * font_pool_selected.length)];
             } while (!canRepresentGlyphs(font_randomized.full_font_name, glyphs) && i < 100);
             if (i >= 100) {
-                console.log(script_name+': fallback -- setting default font due to consistent glyph errors');
+                console.error(script_name+': consistent glyph errors -- falling back to default font');
                 font_randomized = font_default;
             }
         }
-        console.log(script_name+': updating random font to '+font_randomized.display_name);
+        console.debug(script_name+': updating random font to '+font_randomized.display_name);
         style_element.innerHTML = style_element.innerHTML.replace(/(--font-family-japanese:).*;([\s\S]*?--font-family-japanese-hover:).*;/,`$1 ${font_randomized.full_font_name};$2 ${font_default.full_font_name};`);
     }
 
@@ -546,7 +546,7 @@ p.font_legend {
             // on alt+j, update to a new random font
             case 'j':
                 if (!(event.altKey || event.ctrlKey)) return;
-                console.log(script_name+': pressed shortcut to re-roll random font');
+                console.debug(script_name+': pressed shortcut to re-roll random font');
                 updateRandomFont();
                 setflippedFontState();
                 break;
@@ -563,25 +563,25 @@ p.font_legend {
         }
     }
     function onLostFocus() {
-        console.log(script_name+': user lost focus, disabling modifier');
+        console.debug(script_name+': user lost focus, disabling modifier');
         modifier_held = false;
         setflippedFontState();
     }
     function onDidAnswerQuestion() {
-        console.log(script_name+': user answered question, show default font');
+        console.debug(script_name+': user answered question, show default font');
         if (!pageRegex.test(document.location.pathname)) return;
         hover_flipped = true;
         setflippedFontState();
     }
     function onDidUnanswerQuestion() {
-        console.log(script_name+': user reverted answer by Double-Checker script, showing random font again');
+        console.debug(script_name+': user reverted answer by Double-Checker script, showing random font again');
         if (!pageRegex.test(document.location.pathname)) return;
         hover_flipped = false;
         updateRandomFont();
         setflippedFontState();
     }
     function onWillShowNextQuestion() {
-        console.log(script_name+': about to show next question, re-rolling random font');
+        console.debug(script_name+': about to show next question, re-rolling random font');
         if (!pageRegex.test(document.location.pathname)) return;
         hover_flipped = false;
         if (setup_complete) { // TODO: if check maybe not necessary, since event only triggered when setup already done?
@@ -614,7 +614,7 @@ p.font_legend {
     // Script Startup
     //-------------------------------------------------------------------
     function startup() {
-        console.log(script_name+': Performing initial setup...');
+        console.debug(script_name+': Performing initial setup...');
 
         // initialization of the Wanikani Open Framework
         if (!wkof) {
@@ -639,12 +639,12 @@ p.font_legend {
             .then(settingsLoad)
             .then(() => {
                 setup_complete = true;
-                console.log(script_name+': SETUP COMPLETE');
+                console.info(script_name+': SETUP COMPLETE');
             });
         }
         
         function onReviewsPage() {
-        console.log(script_name+': moved to reviews page, caching elements and showing random font...');
+        console.info(script_name+': moved to reviews page, caching elements and showing random font...');
         const wkof_modules = 'Menu';
         wkof.include(wkof_modules);
         return wkof
