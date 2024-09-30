@@ -94,7 +94,7 @@
         "Hoso-Fuwa" :            {full_font_name: "Hosofuwafont", display_name: "Hoso Fuwa", url: 'https://marciska.github.io/Jitai/HosoFuwa.css', download: 'https://huwahuwa.ff-design.net/ほそふわフォント/', recommended: false, bugged: false},
         "Nagayama-Kai" :         {full_font_name: "Nagayama Kai, nagayama_kai", display_name: "Nagayama Kai", url: 'https://marciska.github.io/Jitai/NagayamaKai.css', download: 'https://www.bokushin.org/en/nagayama-sensei-font/', recommended: false, bugged: false},
         "Pop-Rum-Cute" :         {full_font_name: "PopRumCute", display_name: "Pop Rum Cute", url: 'https://marciska.github.io/Jitai/PopRumCute.css', download: 'https://moji-waku.com/poprumcute/', recommended: false, bugged: false},
-        "Ronde-B-Square" :       {full_font_name: "Ronde B Square, Ronde-B, Ronde-B-Square", display_name: "Ronde B square", url: 'local', download: 'https://moji-waku.com/poprumcute/', recommended: false, bugged: false},
+        "Ronde-B-Square" :       {full_font_name: "Ronde B Square, Ronde-B, Ronde-B-Square", display_name: "Ronde B square", url: 'local', download: 'https://moji-waku.com/ronde/', recommended: false, bugged: false},
         "San-Chou-Me" :          {full_font_name: "San Chou Me, santyoume-font", display_name: "San Chou Me", url: 'https://marciska.github.io/Jitai/SanChouMe.css', download: 'https://web.archive.org/web/20190330133455/http://www.geocities.jp/bokurano_yume/', recommended: false, bugged: false},
     };
 
