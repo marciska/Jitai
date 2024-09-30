@@ -82,7 +82,7 @@
         "Chifont" :              {full_font_name: "'chifont+', chifont, Nchifont, 'Nchifont+'", display_name: "Chifont", url: 'local', download: 'https://welina.xyz/font/tegaki/nchif/', recommended: false, bugged: false},
         "Chihaya-Gothic" :       {full_font_name: "ChihayaGothic", display_name: "Chihaya Gothic", url: 'local', download: 'https://welina.xyz/font/tegaki/gothic/', recommended: false, bugged: false},
         "Cinecaption" :          {full_font_name: "cinecaption", display_name: "Cinecaption", url: 'local', download: 'https://cooltext.com/Download-Font-しねきゃぷしょん+cinecaption', recommended: false, bugged: false},
-        "Darts" :                {full_font_name: "DartsFont, darts font", display_name: "Darts Font", url: 'https://marciska.github.io/Jitai/Darts.css', download: 'https://www.p-darts.jp/font/dartsfont/', recommended: false, bugged: false},
+        "Darts" :                {full_font_name: "DartsFont, darts font", display_name: "Darts", url: 'https://marciska.github.io/Jitai/Darts.css', download: 'https://www.p-darts.jp/font/dartsfont/', recommended: false, bugged: false},
         "EPSON-行書体Ｍ" :       {full_font_name: "EPSON 行書体Ｍ", display_name: "EPSON 行書体Ｍ", url: 'local', download: 'https://www.epson.jp/dl_soft/readme/27767.htm', recommended: false, bugged: false},
         "EPSON-正楷書体Ｍ" :     {full_font_name: "EPSON 正楷書体Ｍ", display_name: "EPSON 正楷書体Ｍ", url: 'local', download: 'https://www.epson.jp/dl_soft/readme/27767.htm', recommended: false, bugged: false},
         "EPSON-教科書体Ｍ" :     {full_font_name: "EPSON 教科書体Ｍ", display_name: "EPSON 教科書体Ｍ", url: 'local', download: 'https://www.epson.jp/dl_soft/readme/27767.htm', recommended: false, bugged: false},
