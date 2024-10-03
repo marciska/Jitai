@@ -95,6 +95,7 @@
         "Hakusyu-Tensho" :            {full_font_name: "hot-tenshokk, HakusyuTensho", display_name: "Hakusyu Tensho", url: 'adobe', download: 'https://www.hakusyu.com/download_education.htm', recommended: false, bugged: false},
         // Other popular fonts
         "3D-Kirieji" :                    {full_font_name: "'3Dkirieji04', 三次元切絵字04", display_name: "3D Kirieji", url: 'local', download: 'https://fub.booth.pm/items/2451491', recommended: false, bugged: false},
+        "851CHIKARA-YOWAKU" :             {full_font_name: "'851CHIKARA-YOWAKU', '851チカラヨワク'", display_name: "851 Chikara Yowaku", url: 'local', download: 'https://pm85122.onamae.jp/851ch-yw.html', recommended: false, bugged: false},
         "851Gkktt" :                      {full_font_name: "'851Gkktt', '851ゴチカクット'", display_name: "851 Gochikakutto", url: 'local', download: 'https://pm85122.onamae.jp/851Gkktt.html', recommended: false, bugged: false},
         "851MkPOP" :                      {full_font_name: "'851MkPOP', '851マカポップ'", display_name: "851 Mk POP", url: 'local', download: 'https://pm85122.onamae.jp/851mkpop.html', recommended: false, bugged: false},
         "851-Tegaki-Zatsu" :              {full_font_name: "'851tegakizatsu', '851手書き雑フォント'", display_name: "851 Tegaki Zatsu", url: 'local', download: 'https://fontmeme.com/fonts/851-tegaki-zatsu-font/', recommended: false, bugged: false},
