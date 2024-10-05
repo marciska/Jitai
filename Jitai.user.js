@@ -3,7 +3,7 @@
 // @author      @marciska
 // @namespace   marciska
 // @description Displays your WaniKani reviews with randomized fonts (based on original by @obskyr, and community-maintained)
-// @version     3.3.3
+// @version     3.3.4
 // @icon        https://raw.github.com/marciska/Jitai/master/imgs/jitai.ico
 // @match       https://www.wanikani.com/*
 // @match       https://preview.wanikani.com/*
@@ -16,7 +16,7 @@
 	'use strict';
 
     /* eslint no-multi-spaces: off */
-    /* global wkof */
+    /* global wkof, Stimulus */
 
     //===================================================================
     // Variables
@@ -31,6 +31,7 @@
     // ----- States -----
     let item_element;
     let style_element;
+    let reroll_button_enabled = false;
     let setup_complete = false;
     let font_default; // will be set on review page load
     let font_randomized; // will be set dynamically, earliest on review page load
@@ -250,6 +251,13 @@
         }
         console.debug(script_name+': applying font pool of ' + font_pool_selected.length + ' fonts:\n'+font_pool_selected.map(a => a.display_name));
 
+        // check if reroll button enabled
+        if ('reroll_button' in settings) {
+            reroll_button_enabled = settings['reroll_button'];
+            // let reroll_button = document.querySelector('#option-reroll-font');
+            // if (reroll_button) reroll_button.classList.toggle('hidden', !settings['reroll_button']);
+        }
+
         // randomly shuffle font pool
         shuffleArray(font_pool_selected);
 
@@ -295,7 +303,6 @@
         // prepare selection option for every font
         const font_available_selector = Object.fromEntries(fontkeys_available.map(fontkey => ['BOX_'+fontkey, {
             type: 'group',
-            // label: `<span class="font_label${font_pool[fontkey].recommended ? ' font_recommended' : ''}">${font_pool[fontkey].display_name}</span>`,
             label: `<span class="font_label${fonts_available[fontkey].recommended ? ' font_recommended' : ''}${fonts_available[fontkey].bugged ? ' font_bugged' : ''}">${fonts_available[fontkey].display_name} ${fonts_available[fontkey].url !== 'local' ? '<a href="'+fonts_available[fontkey].download+'" target="_blank"><i class="downloadfont"></i></a>' : ''}</span>`,
             content: {
                 sampletext: {
@@ -343,6 +350,11 @@
                 legend: {
                     type: 'html',
                     html: `<div class="font_legend"><span class="font_recommended">: Recommended Font</span><span><i class="font_bugged"></i>: Bugged on some browsers, doesn't show all glyphs</span></div><p class="font_legend">Jitai will during review only choose fonts that can fully represent the review item. (Except Safari browser, here it is recommended to choose only fonts that have all characters included.)</p>`
+                },
+                reroll_button: {
+                    type: 'checkbox',
+                    label: 'Show button for re-rolling font',
+                    default: false,
                 },
                 divider_available: {
                     type: 'section',
@@ -676,6 +688,66 @@ p.font_legend {
         document.body.removeEventListener("blur", onLostFocus, listenerOptions);
     }
 
+    function installRerollButton() {
+        if (!reroll_button_enabled) return;
+        let reroll_button = document.querySelector('#option-reroll-font');
+        if (reroll_button) return;
+
+        // Install the reroll-font button
+        console.debug(script_name+': install re-roll button');
+        let elem = document.querySelector('#additional-content ul'); // putting this in if-else block so that even if button support breaks because of WaniKani change, rest of Jitai will still work
+        if (elem)
+        {
+            document.querySelector('#additional-content ul').style.textAlign = 'center';
+            // async function get_controller(name) {
+            //     return await Stimulus.getControllerForElementAndIdentifier(document.querySelector(`[data-controller~="${name}"]`),name);
+            // }
+            // let additional_content = get_controller('additional-content');
+            // document.querySelector('#additional-content ul').insertAdjacentHTML('beforeend',
+            //     `<li id="option-reroll-font" class="additional-content__menu-item additional-content__menu-item--5">
+            //         <a title="Re-roll Font" class="additional-content__item ${additional_content.toggleDisabledClass}">
+            //             <div class="additional-content__item-text">Re-roll Font</div>
+            //             <div class="additional-content__item-icon-container">
+            //                 <svg class="wk-icon wk-icon--reload" title="Re-roll Font" viewBox="0 0 512 512" aria-hidden="true">
+            //                     <use href="#wk-icon__reload"></use>
+            //                 </svg>
+            //             </div>
+            //         </a>
+            //     </li>`
+            // );
+            document.querySelector('#additional-content ul').insertAdjacentHTML('beforeend',
+                `<li id="option-reroll-font" class="additional-content__menu-item additional-content__menu-item--5">
+                    <a title="Re-roll Font" class="additional-content__item">
+                        <div class="additional-content__item-text">Re-roll Font</div>
+                        <div class="additional-content__item-icon-container">
+                            漢字
+                            <svg class="wk-icon wk-icon--reload" title="Re-roll Font" viewBox="0 0 512 512" aria-hidden="true">
+                                <use href="#wk-icon__reload"></use>
+                            </svg>
+                        </div>
+                    </a>
+                </li>`
+            );
+
+            // install click event
+            document.querySelector('#option-reroll-font').addEventListener('click', updateRandomFont);
+        }
+        else
+        {
+            console.error(script_name+': Cannot add re-roll font button!');
+        }
+        
+    }
+    function uninstallRerollButton() { // maybe not needed?
+        let reroll_button = document.querySelector('#option-reroll-font');
+        if (reroll_button)
+        {
+            console.debug(script_name+': removing re-roll button');
+            reroll_button.remove();
+        }
+    }
+
+
     //===================================================================
     // Script Startup
     //-------------------------------------------------------------------
@@ -717,6 +789,7 @@ p.font_legend {
             .ready(wkof_modules)
             .then(cacheDefaultElementStyles)
             .then(insertStyle)
+            .then(installRerollButton)
             .then(registerJitaiEvents)
             .then(installSettingsMenu)
             .then(setflippedFontState)
@@ -736,10 +809,13 @@ p.font_legend {
     function leaveReviewsPage() {
         console.info(script_name+': leaving reviews page -- removing jitai events and resetting to default font...');
         unregisterJitaiEvents();
+        uninstallRerollButton();
         font_randomized = font_default;
-        if (!style_element) return;
-        console.debug(script_name+': removing style element');
-        document.head.removeChild(style_element);
+        if (style_element)
+        {
+            console.debug(script_name+': removing style element');
+            document.head.removeChild(style_element);
+        }
     }
 
     startup().then(() => {
