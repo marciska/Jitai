@@ -3,7 +3,7 @@
 // @author      @marciska
 // @namespace   marciska
 // @description Displays your WaniKani reviews with randomized fonts (based on original by @obskyr, and community-maintained)
-// @version     3.3.2
+// @version     3.3.3
 // @icon        https://raw.github.com/marciska/Jitai/master/imgs/jitai.ico
 // @match       https://www.wanikani.com/*
 // @match       https://preview.wanikani.com/*
@@ -23,17 +23,15 @@
     //-------------------------------------------------------------------
     const script_id = "jitai";
     const script_name = "Jitai";
-    const wkof_version_needed = '1.2.3';
+    const wkof_version_needed = '1.2.6';
     const listenerOptions = { passive: true };
-    // const pageRegex = /^\/subjects\/(?:review.*\/?|extra_study)$/;
-    // const pageRegex = /^\/^(subjects\/(?:review.*\/?|extra_study)|recent-mistakes)$/;
     const pageRegex = /^\/(subjects\/(?:review.*\/?|extra_study)$|recent-mistakes)/;
     const example_sentence = '質問：クモの味は何だと思う?<br>答え：・・・酸っぱいだ！（笑）';
+    
+    // ----- States -----
     let item_element;
     let style_element;
     let setup_complete = false;
-
-    // ----- States -----
     let font_default; // will be set on review page load
     let font_randomized; // will be set dynamically, earliest on review page load
     let hover_flipped = false; // bool indicating if hovering effect is flipped
@@ -610,6 +608,15 @@ p.font_legend {
         document.body.addEventListener("blur", onLostFocus, listenerOptions);
     }
 
+    function unregisterJitaiEvents() {
+        window.removeEventListener("didAnswerQuestion", onDidAnswerQuestion, listenerOptions);
+        window.removeEventListener("willShowNextQuestion", onWillShowNextQuestion, listenerOptions);
+        window.removeEventListener("didUnanswerQuestion", onDidUnanswerQuestion, listenerOptions);
+        document.body.removeEventListener("keydown", onKeyDown, listenerOptions);
+        document.body.removeEventListener("keyup", onKeyUp, listenerOptions);
+        document.body.removeEventListener("blur", onLostFocus, listenerOptions);
+    }
+
     //===================================================================
     // Script Startup
     //-------------------------------------------------------------------
@@ -641,10 +648,10 @@ p.font_legend {
                 setup_complete = true;
                 console.info(script_name+': SETUP COMPLETE');
             });
-        }
+    }
         
-        function onReviewsPage() {
-        console.info(script_name+': moved to reviews page, caching elements and showing random font...');
+    function enterReviewsPage() {
+        console.info(script_name+': entering reviews page -- caching elements and showing random font...');
         const wkof_modules = 'Menu';
         wkof.include(wkof_modules);
         return wkof
@@ -653,17 +660,37 @@ p.font_legend {
             .then(insertStyle)
             .then(registerJitaiEvents)
             .then(installSettingsMenu)
-            .then(updateRandomFont)
             .then(setflippedFontState)
             .then(() => {
                 if (font_pool_selected.length === 0) {
-                    alert(script_name+' detected that you have no custom fonts selected. Click the cog on the top left to select some.\n\nIf you had some selected before and now they are suddenly gone... sorry, I\'m quite forgetful sometimes :\'(')
+                    setTimeout(() => {
+                        alert(script_name+' detected that you have no custom fonts selected. Click the cog on the top left to select some.\n\nIf you had some selected before and now they are suddenly gone... sorry, I\'m quite forgetful sometimes :\'(')
+                    }, 2000);
+                }
+                else
+                {
+                    updateRandomFont();
                 }
             });
     }
 
+    function leaveReviewsPage() {
+        console.info(script_name+': leaving reviews page -- removing jitai events and resetting to default font...');
+        unregisterJitaiEvents();
+        font_randomized = font_default;
+        if (!style_element) return;
+        console.debug(script_name+': removing style element');
+        document.head.removeChild(style_element);
+    }
+
     startup().then(() => {
-        wkof.on_pageload(pageRegex, onReviewsPage);
+        // on_pageload also allows array of pageregex, then onReviewsPage will get told which regex matched -- may be useful
+        // see: https://community.wanikani.com/t/wanikani-open-framework-developer-thread/22231/606?u=marciska
+        wkof.on_pageload(
+            pageRegex,
+            enterReviewsPage,
+            leaveReviewsPage
+        );
     });
 
 })(window);
