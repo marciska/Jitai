@@ -3,7 +3,7 @@
 // @author      @marciska
 // @namespace   marciska
 // @description Displays your WaniKani reviews with randomized fonts (based on original by @obskyr, and community-maintained)
-// @version     3.3.4
+// @version     3.3.5
 // @icon        https://raw.github.com/marciska/Jitai/master/imgs/jitai.ico
 // @match       https://www.wanikani.com/*
 // @match       https://preview.wanikani.com/*
@@ -249,7 +249,8 @@
                 }
             }
         }
-        console.debug(script_name+': applying font pool of ' + font_pool_selected.length + ' fonts:\n'+font_pool_selected.map(a => a.display_name));
+        let selected_fonts_debug = [...new Set(font_pool_selected.map(a => a.display_name))];
+        console.debug(script_name+': applying font pool of ' + selected_fonts_debug.length + ' fonts:\n'+selected_fonts_debug);
 
         // check if reroll button enabled
         if ('reroll_button' in settings) {
@@ -339,11 +340,11 @@
             content: {
                 currentfont: {
                     type: 'group',
-                    label: `<span class="font_label">Current Font: ${font_randomized.display_name}</span>`,
+                    label: `<span class="font_label">Current Font: ${((font_randomized!==undefined) ? font_randomized.display_name : '?')}</span>`,
                     content: {
                         sampletext: {
                             type: 'html',
-                            html: `<p class="font_example" style="font-family: ${font_randomized.full_font_name}">${example_sentence}</p>`
+                            html: `<p class="font_example" style="font-family: ${((font_randomized!==undefined) ? font_randomized.full_font_name : '?')}">${example_sentence}</p>`
                         }
                     }
                 },
@@ -589,7 +590,7 @@ p.font_legend {
     }
 
     function cacheDefaultElementStyles() {
-        if (font_default !== undefined && font_randomized !== undefined) return;
+        //if (font_default !== undefined && font_randomized !== undefined) return;
         item_element = document.getElementsByClassName("character-header__characters")[0];
         if (!item_element) return;
 
@@ -609,6 +610,7 @@ p.font_legend {
             case 'Control':
             case 'Shift':
                 if (!event.ctrlKey || !event.shiftKey) return;
+                console.debug(script_name+': pressed shortcut to show default font');
                 modifier_held = true;
                 setflippedFontState();
                 break;
@@ -775,6 +777,7 @@ p.font_legend {
             .then(checkIfWebfontsLocallyInstalled)
             .then(addPreconnectLinks)
             .then(settingsLoad)
+            .then(installSettingsMenu)
             .then(() => {
                 setup_complete = true;
                 console.info(script_name+': SETUP COMPLETE');
@@ -811,6 +814,8 @@ p.font_legend {
         unregisterJitaiEvents();
         uninstallRerollButton();
         font_randomized = font_default;
+        hover_flipped = false;
+        modifier_held = false;
         if (style_element)
         {
             console.debug(script_name+': removing style element');
