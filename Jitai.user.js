@@ -770,7 +770,7 @@ p.font_legend {
             return;
         }
 
-        const wkof_modules = 'Settings';
+        const wkof_modules = 'Settings, Menu';
         wkof.include(wkof_modules);
         return wkof
             .ready(wkof_modules)
