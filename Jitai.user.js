@@ -3,7 +3,7 @@
 // @author      @marciska
 // @namespace   marciska
 // @description Displays your WaniKani reviews with randomized fonts (based on original by @obskyr, and community-maintained)
-// @version     3.3.5
+// @version     3.3.6
 // @icon        https://raw.github.com/marciska/Jitai/master/imgs/jitai.ico
 // @match       https://www.wanikani.com/*
 // @match       https://preview.wanikani.com/*
